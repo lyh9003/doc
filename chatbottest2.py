@@ -3,7 +3,7 @@ import streamlit as st
 
 st.title("인선쌤 보조 용구리봇")
 
-client = OpenAI(api_key=st.secrets["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"])
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-4"
