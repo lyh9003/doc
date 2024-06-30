@@ -1,7 +1,7 @@
 from openai import OpenAI
 import streamlit as st
 
-st.title("친근한 챗봇")
+st.title("인선쌤 보조 용구리봇!")
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
