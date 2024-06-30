@@ -1,12 +1,12 @@
 from openai import OpenAI
 import streamlit as st
 
-st.title("친근한 챗봇")
+st.title("인선쌤 보조 용구리봇")
 
 client = OpenAI(api_key=st.secrets["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"])
 
 if "openai_model" not in st.session_state:
-    st.session_state["openai_model"] = "gpt-3.5-turbo"
+    st.session_state["openai_model"] = "gpt-4"
 
     system_message = '''
     너의 이름은 영어 과외선생님 봇이야.
