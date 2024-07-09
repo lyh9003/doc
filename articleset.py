@@ -2,7 +2,7 @@ from openai import OpenAI
 import streamlit as st
 
 st.title("논문 Survey")
-st.write("음식과 관련된 문장을 적어보세요"
+st.write("음식과 관련된 문장을 적어보세요")
 
 # API 클라이언트 설정
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
