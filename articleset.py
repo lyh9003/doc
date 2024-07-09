@@ -18,7 +18,7 @@ option = st.selectbox(
     )
 )
 # 시스템 메시지 설정
-if option == '옵션 1: [직접-메타]',:
+if option == '옵션 1: [직접-메타]':
     system_message = '''
     안녕! 오늘은 네가 중학교 영어 보조교사의 역할을 해줬으면 좋겠어!
     지금부터 너와 대화할 이준휘 학생은 중학교 2학년 남자 학생이고, 이 학생의 어휘 수준은 'oxford vocabulary test'를 기준으로 B1 수준이야. 총 40문항중 28를 맞힌 수준이지. https://www.oxfordonlineenglish.com/english-level-test/vocabulary 에서 oxford vocabulary test가 무엇인지 확인할 수 있어.
