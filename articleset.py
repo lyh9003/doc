@@ -1,7 +1,8 @@
 from openai import OpenAI
 import streamlit as st
 
-st.title("인선쌤 보조 용구리봇!")
+st.title("논문 Survey")
+st.write("음식과 관련된 문장을 적어보세요"
 
 # API 클라이언트 설정
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
@@ -42,14 +43,17 @@ else:
 
     '''
 
+
 if "openai_model" not in st.session_state:
-    st.session_state["openai_model"] = "gpt-4o"
+    st.session_state["openai_model"] = "gpt-4"
 
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-
-if len(st.session_state.messages) == 0:
+# 이전 선택된 옵션과 현재 옵션이 다른 경우 대화 초기화
+if "selected_option" not in st.session_state or st.session_state.selected_option != option:
+    st.session_state.selected_option = option
     st.session_state.messages = [{"role": "system", "content": system_message}]
+else:
+    if len(st.session_state.messages) == 0:
+        st.session_state.messages = [{"role": "system", "content": system_message}]
 
 for idx, message in enumerate(st.session_state.messages):
     if idx > 0:
