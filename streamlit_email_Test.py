@@ -4,8 +4,6 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-
-
 st.title("논문 Survey")
 st.write("음식과 관련된 문장을 적어보세요")
 
@@ -120,7 +118,10 @@ if 'user_name' in st.session_state and 'user_grade' in st.session_state:
             st.error(f'이메일 발송 중 오류가 발생했습니다: {e}')
 
     if st.button('대화내용 이메일로 보내기'):
-        email_body = '\n'.join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
+        email_body = f"사용자 이름: {st.session_state['user_name']}\n"
+        email_body += f"사용자 학년: {st.session_state['user_grade']}\n\n"
+        email_body += "대화 내용:\n"
+        email_body += '\n'.join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
         send_email('대화내용', email_body)
 else:
     st.write("먼저 사용자 정보를 입력해주세요.")
