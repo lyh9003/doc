@@ -57,18 +57,18 @@ if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-3.5-turbo"
 
 # 이전 선택된 옵션과 현재 옵션이 다른 경우 대화 초기화
-if "selected_option" not in st.session_state or st.session_state.selected_option != option:
-    st.session_state.selected_option = option
-    st.session_state.messages = [{"role": "system", "content": system_message}]
-else:
-    if len(st.session_state.messages) == 0:
-        st.session_state.messages = [{"role": "system", "content": system_message}]
-
-for idx, message in enumerate(st.session_state.messages):
-    if idx > 0:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
+#if "selected_option" not in st.session_state or st.session_state.selected_option != option:
+#    st.session_state.selected_option = option
+#    st.session_state.messages = [{"role": "system", "content": system_message}]
+#else:
+#    if len(st.session_state.messages) == 0:
+#        st.session_state.messages = [{"role": "system", "content": system_message}]
+#
+#for idx, message in enumerate(st.session_state.messages):
+#    if idx > 0:
+#        with st.chat_message(message["role"]):
+#            st.markdown(message["content"])
+#
 if prompt := st.chat_input("What is up?"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
