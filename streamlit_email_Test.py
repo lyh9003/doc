@@ -4,6 +4,42 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+
+# 페이지 상단에 고정되는 요소
+st.markdown("""
+    <style>
+    .fixed-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: white;
+        z-index: 1000;
+        padding: 10px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .content {
+        margin-top: 150px;  /* 헤더 높이에 따라 조정 */
+    }
+    .left-column {
+        float: left;
+        width: 75%;
+    }
+    .right-column {
+        float: right;
+        width: 25%;
+    }
+    </style>
+    <div class="fixed-header">
+        <h2>논문 Survey</h2>
+        <p>음식과 관련된 문장을 적어보세요</p>
+        <select id="system_message_select">
+            <option value="option1">옵션 1: [직접-메타]</option>
+            <option value="option4">옵션 4: [간접-비메타]</option>
+        </select>
+    </div>
+""", unsafe_allow_html=True)
+
 st.title("논문 Survey")
 st.write("음식과 관련된 문장을 적어보세요")
 
@@ -58,6 +94,16 @@ if "openai_model" not in st.session_state:
 
 if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "system", "content": system_message}]
+
+# 옵션이 변경되었을 때 메시지 추가
+if "selected_option" not in st.session_state or st.session_state.selected_option != option:
+    st.session_state.selected_option = option
+    st.session_state.messages.append({"role": "system", "content": f"{option}로 변경되었습니다."})
+
+
+# 페이지 콘텐츠 시작
+st.markdown('<div class="content">', unsafe_allow_html=True)
+
 
 for idx, message in enumerate(st.session_state.messages):
     if idx > 0:
