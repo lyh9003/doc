@@ -6,6 +6,9 @@ from email.mime.multipart import MIMEMultipart
 
 st.title("논문 Survey")
 st.write("음식과 관련된 문장을 적어보세요")
+from_email = st.secrets["EMAIL_ADDRESS"]
+from_password = st.secrets["EMAIL_PASSWORD"]
+
 
 # API 클라이언트 설정
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
@@ -84,8 +87,7 @@ if prompt := st.chat_input("What is up?"):
     st.session_state.messages.append({"role": "assistant", "content": response})
 
 def send_email(subject, body, to_email="rollingfac@naver.com"):
-    from_email = st.secrets["EMAIL_ADDRESS"]
-    from_password = st.secrets["EMAIL_PASSWORD"]
+
 
 
     msg = MIMEMultipart()
