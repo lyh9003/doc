@@ -112,9 +112,12 @@ with left_column:
             )
             response = st.write_stream(stream)
         st.session_state.messages.append({"role": "assistant", "content": response})
+        input_placeholder = st.empty()
 
 with right_column:
 
     if st.button('대화내용 이메일로 보내기'):
         email_body = '\n'.join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
         send_email('대화내용', email_body)
+        
+user_input = input_placeholder.text_input("입력: ", "")
