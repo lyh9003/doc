@@ -1,8 +1,10 @@
 from openai import OpenAI
 import streamlit as st
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 st.title("인선쌤 보조 용구리봇!")
-
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
@@ -50,3 +52,38 @@ if prompt := st.chat_input("What is up?"):
         )
         response = st.write_stream(stream)
     st.session_state.messages.append({"role": "assistant", "content": response})
+
+def send_email(subject, body, to_email):
+    EMAIL_ADDRESS = st.secrets('EMAIL_ADDRESS')  # 발신자 이메일 주소
+    EMAIL_PASSWORD = st.secrets('EMAIL_PASSWORD')  # 발신자 이메일 비밀번호
+    RECIPIENT_EMAIL = "rollingfac@gmail.com"  # 수신자 이메일 주소
+
+    SMTP_SERVER = "smtp.gmail.com"  # Gmail SMTP 서버 주소
+    SMTP_PORT = 587  # SMTP 포트
+
+    
+    msg = MIMEMultipart()
+    msg['From'] = from_email
+    msg['To'] = to_email
+    msg['Subject'] = subject
+
+    msg.attach(MIMEText(body, 'plain'))
+
+    try:
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+        server.login(from_email, from_password)
+        text = msg.as_string()
+        server.sendmail(from_email, to_email, text)
+        server.quit()
+        st.success('이메일이 성공적으로 발송되었습니다!')
+    except Exception as e:
+        st.error(f'이메일 발송 중 오류가 발생했습니다: {e}')
+
+if st.button('대화내용 이메일로 보내기'):
+    to_email = st.text_input('받는 사람 이메일:')
+    if to_email:
+        email_body = '\n'.join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
+        send_email('대화내용', email_body, to_email)
+    else:
+        st.warning('이메일 주소를 입력해주세요.')
