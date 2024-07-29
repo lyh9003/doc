@@ -75,28 +75,33 @@ with col1:
         st.session_state.messages.append({"role": "system", "content": f"{option}"})
     
 with col2:
-    
-    for idx, message in enumerate(st.session_state.messages):
-        if idx > 0:
-            with st.chat_message(message["role"]):
-                st.markdown(message["content"])
-    
-    if prompt := st.chat_input("What is up?"):
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
-    
-        with st.chat_message("assistant"):
-            stream = client.chat.completions.create(
-                model=st.session_state["openai_model"],
-                messages=[
-                    {"role": m["role"], "content": m["content"]}
-                    for m in st.session_state.messages
-                ],
-                stream=True,
-            )
-            response = st.write_stream(stream)
-        st.session_state.messages.append({"role": "assistant", "content": response})
+    chat_container = st.container()
+    with chat_container:
+        # 채팅 메시지 표시
+        for idx, message in enumerate(st.session_state.messages):
+            if idx > 0:
+                with st.chat_message(message["role"]):
+                    st.markdown(message["content"])
+
+    # 메시지 입력 창이 화면 맨 아래에 고정되도록 설정
+    input_container = st.container()
+    with input_container:
+        if prompt := st.chat_input("메시지를 입력하세요..."):
+            st.session_state.messages.append({"role": "user", "content": prompt})
+            with st.chat_message("user"):
+                st.markdown(prompt)
+
+            with st.chat_message("assistant"):
+                stream = client.chat.completions.create(
+                    model=st.session_state["openai_model"],
+                    messages=[
+                        {"role": m["role"], "content": m["content"]}
+                        for m in st.session_state.messages
+                    ],
+                    stream=True,
+                )
+                response = st.write_stream(stream)
+            st.session_state.messages.append({"role": "assistant", "content": response})
 
 def send_email(subject, body, to_email="rollingfac@naver.com"):
 
