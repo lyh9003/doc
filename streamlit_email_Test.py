@@ -1,5 +1,4 @@
 import streamlit as st
-from datetime import datetime
 import openai
 import smtplib
 from email.mime.text import MIMEText
@@ -13,21 +12,12 @@ load_dotenv()
 # OpenAI API 키 설정
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
-# 로그 파일 설정
-LOG_FILE = "chat_log.txt"
-
 # 이메일 설정
 SMTP_SERVER = "smtp.gmail.com"  # Gmail SMTP 서버 주소
 SMTP_PORT = 587  # SMTP 포트
 EMAIL_ADDRESS = os.getenv('EMAIL_ADDRESS')  # 발신자 이메일 주소
 EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')  # 발신자 이메일 비밀번호
 RECIPIENT_EMAIL = "rollingfac@gmail.com"  # 수신자 이메일 주소
-
-# 로그를 파일에 기록하는 함수
-def log_chat(user_input, bot_response):
-    with open(LOG_FILE, "a") as log_file:
-        log_file.write(f"{datetime.now()} - User: {user_input}\n")
-        log_file.write(f"{datetime.now()} - Bot: {bot_response}\n")
 
 # ChatGPT 응답을 가져오는 함수
 def get_chatgpt_response(prompt):
@@ -71,9 +61,6 @@ if user_input:
     # 채팅 기록에 추가
     st.session_state['chat_history'].append(f"당신: {user_input}")
     st.session_state['chat_history'].append(f"ChatGPT: {bot_response}")
-    
-    # 로그 기록
-    log_chat(user_input, bot_response)
 
 # 채팅 기록 출력
 for chat in st.session_state['chat_history']:
