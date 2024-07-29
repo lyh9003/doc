@@ -57,8 +57,8 @@ if prompt := st.chat_input("What is up?"):
 def send_email(subject, body, to_email="rollingfac@gmail.com"):
     from_email = st.secrets["EMAIL_ADDRESS"]
     from_password = st.secrets["EMAIL_PASSWORD"]
-    SMTP_SERVER = "smtp.gmail.com"  # Gmail SMTP 서버 주소
-    SMTP_PORT = 587  # SMTP 포트
+    smtp_server = "smtp.gmail.com"  # Gmail SMTP 서버 주소
+    stmp_port = 587  # SMTP 포트
 
     msg = MIMEMultipart()
     msg['From'] = from_email
