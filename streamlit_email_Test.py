@@ -18,14 +18,7 @@ from_password = st.secrets["EMAIL_PASSWORD"]
 smtp_server = "smtp.naver.com"  # Gmail SMTP 서버 주소
 smtp_port = 587  # SMTP 포트
 
-# 옵션 설정
-option = st.selectbox(
-    '시스템 메시지를 선택하세요',
-    (
-        '옵션 1: [직접-메타]',
-        '옵션 4: [간접-비메타]'
-    )
-)
+# 옵션 설정 (이전)
 
 # 시스템 메시지 설정
 if option == '옵션 1: [직접-메타]':
@@ -66,6 +59,15 @@ if "selected_option" not in st.session_state or st.session_state.selected_option
     st.session_state.selected_option = option
     st.session_state.messages.append({"role": "system", "content": f"{option}"})
 
+# 옵션 위치 아래로 변경
+
+option = st.selectbox(
+    '시스템 메시지를 선택하세요',
+    (
+        '옵션 1: [직접-메타]',
+        '옵션 4: [간접-비메타]'
+    )
+)
 
 for idx, message in enumerate(st.session_state.messages):
     if idx > 0:
