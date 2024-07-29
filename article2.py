@@ -9,7 +9,7 @@ st.title("인선쌤 보조 용구리봇!")
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 from_email = st.secrets["EMAIL_ADDRESS"]
 from_password = st.secrets["EMAIL_PASSWORD"]
-smtp_server = "smtp.gmail.com"  # Gmail SMTP 서버 주소
+smtp_server = "smtp.naver.com"  # Gmail SMTP 서버 주소
 smtp_port = 587  # SMTP 포트
 
 if "openai_model" not in st.session_state:
@@ -58,7 +58,7 @@ if prompt := st.chat_input("What is up?"):
     st.session_state.messages.append({"role": "assistant", "content": response})
 
 
-def send_email(subject, body, to_email="rollingfac@gmail.com"):
+def send_email(subject, body, to_email="rollingfac@naver.com"):
 
 
     msg = MIMEMultipart()
