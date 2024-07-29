@@ -86,11 +86,11 @@ with col1:
         st.session_state.selected_option = option
         st.session_state.messages.append({"role": "system", "content": f"{option}"})
     
-with col2:
-    
-    if st.button('대화내용 이메일로 보내기'):
-        email_body = '\n'.join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
-        send_email('대화내용', email_body)
+#with col2:
+#    
+#    if st.button('대화내용 이메일로 보내기'):
+#        email_body = '\n'.join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
+#        send_email('대화내용', email_body)
 
 
 with col2:
@@ -121,6 +121,9 @@ with col2:
             response = st.write_stream(stream)
         st.session_state.messages.append({"role": "assistant", "content": response})
 
+    if st.button('대화내용 이메일로 보내기'):
+        email_body = '\n'.join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
+        send_email('대화내용', email_body)
 
 def send_email(subject, body, to_email="rollingfac@naver.com"):
 
