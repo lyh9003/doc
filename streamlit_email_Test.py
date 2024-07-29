@@ -75,6 +75,11 @@ with col1:
         st.session_state.messages.append({"role": "system", "content": f"{option}"})
     
 with col2:
+    
+    if st.button('대화내용 이메일로 보내기'):
+        email_body = '\n'.join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
+        send_email('대화내용', email_body)
+with col2:
     chat_container = st.container()
     with chat_container:
         # 채팅 메시지 표시
@@ -125,8 +130,3 @@ def send_email(subject, body, to_email="rollingfac@naver.com"):
     except Exception as e:
         st.error(f'이메일 발송 중 오류가 발생했습니다: {e}')
 
-with col2:
-    
-    if st.button('대화내용 이메일로 보내기'):
-        email_body = '\n'.join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
-        send_email('대화내용', email_body)
