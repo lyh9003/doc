@@ -91,23 +91,25 @@ with col2:
                     st.markdown(message["content"])
 
     # 메시지 입력 창이 화면 맨 아래에 고정되도록 설정
-    if prompt := st.chat_input("메시지를 입력하세요..."):
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
+    input_container = st.container()
+    with input_container:
+        if prompt := st.chat_input("메시지를 입력하세요..."):
+            st.session_state.messages.append({"role": "user", "content": prompt})
+            with st.chat_message("user"):
+                st.markdown(prompt)
 
-        with st.chat_message("assistant"):
-            stream = client.chat.completions.create(
-                model=st.session_state["openai_model"],
-                messages=[
-                    {"role": m["role"], "content": m["content"]}
-                    for m in st.session_state.messages
-                ],
-                stream=True,
-            )
-            response = st.write_stream(stream)
-        st.session_state.messages.append({"role": "assistant", "content": response})
-        
+            with st.chat_message("assistant"):
+                stream = client.chat.completions.create(
+                    model=st.session_state["openai_model"],
+                    messages=[
+                        {"role": m["role"], "content": m["content"]}
+                        for m in st.session_state.messages
+                    ],
+                    stream=True,
+                )
+                response = st.write_stream(stream)
+            st.session_state.messages.append({"role": "assistant", "content": response})
+
 def send_email(subject, body, to_email="rollingfac@naver.com"):
 
 
