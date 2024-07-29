@@ -10,8 +10,8 @@ st.write("음식과 관련된 문장을 적어보세요")
 # API 클라이언트 설정
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-smtp_server = st.secrets["SMTP_SERVER"]
-smtp_port = st.secrets["SMTP_PORT"]
+smtp_server = "smtp.naver.com"  # Gmail SMTP 서버 주소
+smtp_port = 587  # SMTP 포트
 
 # 옵션 설정
 option = st.selectbox(
