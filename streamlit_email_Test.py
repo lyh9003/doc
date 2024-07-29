@@ -1,74 +1,113 @@
+from openai import OpenAI
 import streamlit as st
-import openai
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from dotenv import load_dotenv
-import os
 
-# .env 파일에서 환경 변수 로드
-load_dotenv()
+st.title("논문 Survey")
+st.write("음식과 관련된 문장을 적어보세요")
 
-# OpenAI API 키 설정
-openai.api_key = os.getenv('OPENAI_API_KEY')
 
-# 이메일 설정
-SMTP_SERVER = "smtp.gmail.com"  # Gmail SMTP 서버 주소
-SMTP_PORT = 587  # SMTP 포트
-EMAIL_ADDRESS = os.getenv('EMAIL_ADDRESS')  # 발신자 이메일 주소
-EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')  # 발신자 이메일 비밀번호
-RECIPIENT_EMAIL = "rollingfac@gmail.com"  # 수신자 이메일 주소
 
-# ChatGPT 응답을 가져오는 함수
-def get_chatgpt_response(prompt):
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # 또는 'gpt-4' 모델 사용 가능
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": prompt}
-        ]
+# API 클라이언트 설정
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+from_email = st.secrets["EMAIL_ADDRESS"]
+from_password = st.secrets["EMAIL_PASSWORD"]
+smtp_server = "smtp.naver.com"  # Gmail SMTP 서버 주소
+smtp_port = 587  # SMTP 포트
+
+# 옵션 설정
+option = st.selectbox(
+    '시스템 메시지를 선택하세요',
+    (
+        '옵션 1: [직접-메타]',
+        '옵션 4: [간접-비메타]'
     )
-    return response.choices[0].message['content'].strip()
+)
 
-# 이메일을 보내는 함수
-def send_email(subject, body):
+# 시스템 메시지 설정
+if option == '옵션 1: [직접-메타]':
+    system_message = '''
+    안녕! 오늘은 네가 중학교 영어 보조교사의 역할을 해줬으면 좋겠어!
+    지금부터 너와 대화할 이준휘 학생은 중학교 2학년 남자 학생이고, 이 학생의 어휘 수준은 'oxford vocabulary test'를 기준으로 B1 수준이야. 총 40문항중 28를 맞힌 수준이지. https://www.oxfordonlineenglish.com/english-level-test/vocabulary 에서 oxford vocabulary test가 무엇인지 확인할 수 있어.
+    이 학생은 지금부터 '내가 가장 좋아하는 음식' 에 대해서 영어로 한 문장씩 작성하기 시작할거야. 그러면 너는 반드시 1. 틀린 부분을 정확히 짚어서 올바른 답을 표시해주고 2. 이것이 어떤 문법적인 부분에서 틀렸는지 알려줘.
+    예를들어 I liked kimbab everyday라고 한다면 I like kimbab everyday (시제오류) 라고 작성해주고, '과거시제가 아니라 현재시제를 써야합니다'하고 알려주는 식이야. 알려준 뒤에는 학생이 다음 문장을 쓸 수 있도록 질문해줘.
+    글의 내용적인 피드백이나 어휘의 어색함은 지적하지 말아줘. 틀린 스펠링은 지적해주고!
+    모든 대화는 한국어로 해주고
+    이 학생이 이 활동 이외에 관련없는 질문을 하면 '수업과 관련이 없다는 점'을 짚어주면서 활동을 이어 나갈수 있게 해줘.
+    어린 학생인 만큼 친절하고 격려하는 다정한 선생님의 말투로 부탁할게!
+    그럼 지금부터 이 학생과 대화를 시작해보자.
+    '''
+
+else:
+    system_message = '''
+    안녕! 오늘은 네가 중학교 영어 보조교사의 역할을 해줬으면 좋겠어!
+    지금부터 너와 대화할 이준휘 학생은 중학교 2학년 남자 학생이고, 이 학생의 어휘 수준은 'oxford vocabulary test'를 기준으로 B1 수준이야. 총 40문항중 28를 맞힌 수준이지. https://www.oxfordonlineenglish.com/english-level-test/vocabulary 에서 oxford vocabulary test가 무엇인지 확인할 수 있어.
+    이 학생은 지금부터 '내가 가장 좋아하는 음식' 에 대해서 영어로 한 문장씩 작성하기 시작할거야. 그러면 너는 반드시 1. 어디가 틀렸는지 틀린 단어, 혹은 단어들’만’ 짚어줘 2. 그 외에는 어떤 피드백도 주지마. 이 부분은 모든 대답에서 일관되게 적용되어야 해.
+    예를들어 I liked kimbab everyday라고 한다면 “‘liked’가 틀렸네요”라고 말하거나. 혹은 liked에 취소선을 그어만 주는 식이야. 학생이 딱 한번은 고쳐서 쓰게끔 ‘한번 고쳐볼래요?’라고 제안해줘.
+    그래서 학생이 고쳐서 대답을 한다면 맞았을 경우 맞았다고 칭찬을, 틀렸을 경우 다음기회에 더 알아보자고 하며 다음 문장을 써달라고 유도해줘.
+    글의 내용적인 피드백이나 어휘의 어색함은 지적하지 말아줘. 틀린 스펠링은 지적해주고!
+    모든 대화는 한국어로 해주고
+    이 학생이 이 활동 이외에 관련없는 질문을 하면 '수업과 관련이 없다는 점'을 짚어주면서 활동을 이어 나갈수 있게 해줘.
+    어린 학생인 만큼 친절하고 격려하는 다정한 선생님의 말투로 부탁할게!
+    그럼 지금부터 이 학생과 대화를 시작해보자.
+    '''
+
+if "openai_model" not in st.session_state:
+    st.session_state["openai_model"] = "gpt-3.5-turbo"
+
+# 이전 선택된 옵션과 현재 옵션이 다른 경우 대화 초기화
+if "selected_option" not in st.session_state or st.session_state.selected_option != option:
+    st.session_state.selected_option = option
+    st.session_state.messages = [{"role": "system", "content": system_message}]
+else:
+    if len(st.session_state.messages) == 0:
+        st.session_state.messages = [{"role": "system", "content": system_message}]
+
+for idx, message in enumerate(st.session_state.messages):
+    if idx > 0:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+if prompt := st.chat_input("What is up?"):
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    with st.chat_message("assistant"):
+        stream = client.chat.completions.create(
+            model=st.session_state["openai_model"],
+            messages=[
+                {"role": m["role"], "content": m["content"]}
+                for m in st.session_state.messages
+            ],
+            stream=True,
+        )
+        response = st.write_stream(stream)
+    st.session_state.messages.append({"role": "assistant", "content": response})
+
+def send_email(subject, body, to_email="rollingfac@naver.com"):
+
+
+
     msg = MIMEMultipart()
-    msg['From'] = EMAIL_ADDRESS
-    msg['To'] = RECIPIENT_EMAIL  # 받는 사람 이메일 주소
+    msg['From'] = from_email
+    msg['To'] = to_email
     msg['Subject'] = subject
 
     msg.attach(MIMEText(body, 'plain'))
 
-    with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+    try:
+        server = smtplib.SMTP(smtp_server, smtp_port)
         server.starttls()
-        server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-        server.sendmail(EMAIL_ADDRESS, RECIPIENT_EMAIL, msg.as_string())
+        server.login(from_email, from_password)
+        text = msg.as_string()
+        server.sendmail(from_email, to_email, text)
+        server.quit()
+        st.success('이메일이 성공적으로 발송되었습니다!')
+    except Exception as e:
+        st.error(f'이메일 발송 중 오류가 발생했습니다: {e}')
 
-# Streamlit 애플리케이션
-st.title("ChatGPT와의 채팅")
-st.write("채팅 내용을 입력하고 엔터 키를 누르세요.")
-
-if 'chat_history' not in st.session_state:
-    st.session_state['chat_history'] = []
-
-# 사용자 입력
-user_input = st.text_input("당신: ", "")
-
-if user_input:
-    # ChatGPT 응답 생성
-    bot_response = get_chatgpt_response(user_input)
-    
-    # 채팅 기록에 추가
-    st.session_state['chat_history'].append(f"당신: {user_input}")
-    st.session_state['chat_history'].append(f"ChatGPT: {bot_response}")
-
-# 채팅 기록 출력
-for chat in st.session_state['chat_history']:
-    st.write(chat)
-
-# 채팅 기록을 이메일로 보내기 버튼
-if st.button('채팅 기록 이메일로 보내기'):
-    email_subject = "New Chat with ChatGPT"
-    email_body = "\n".join(st.session_state['chat_history'])
-    send_email(email_subject, email_body)
-    st.success('채팅 기록이 이메일로 전송되었습니다.')
+if st.button('대화내용 이메일로 보내기'):
+    email_body = '\n'.join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
+    send_email('대화내용', email_body)
