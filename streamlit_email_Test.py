@@ -4,19 +4,6 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-st.markdown("""
-    <style>
-    .chat-container {
-        height: 80vh;
-        overflow-y: auto;
-    }
-    .input-container {
-        position: fixed;
-        bottom: 0;
-        width: 75%;
-    }
-    </style>
-    """, unsafe_allow_html=True)
 
 
 st.title("논문 Survey")
@@ -95,18 +82,17 @@ with col2:
 
 
 with col2:
+    # 채팅 메시지 표시
     chat_container = st.container()
     with chat_container:
-        st.markdown('<div class="chat-container">', unsafe_allow_html=True)
         for idx, message in enumerate(st.session_state.messages):
             if idx > 0:
                 with st.chat_message(message["role"]):
                     st.markdown(message["content"])
-        st.markdown('</div>', unsafe_allow_html=True)
 
     # 메시지 입력 창이 화면 맨 아래에 고정되도록 설정
-    with st.container():
-        st.markdown('<div class="input-container">', unsafe_allow_html=True)
+    input_container = st.container()
+    with input_container:
         if prompt := st.chat_input("메시지를 입력하세요..."):
             st.session_state.messages.append({"role": "user", "content": prompt})
             with st.chat_message("user"):
@@ -123,7 +109,6 @@ with col2:
                 )
                 response = st.write_stream(stream)
             st.session_state.messages.append({"role": "assistant", "content": response})
-        st.markdown('</div>', unsafe_allow_html=True)
 
 def send_email(subject, body, to_email="rollingfac@naver.com"):
 
@@ -146,4 +131,3 @@ def send_email(subject, body, to_email="rollingfac@naver.com"):
         st.success('이메일이 성공적으로 발송되었습니다!')
     except Exception as e:
         st.error(f'이메일 발송 중 오류가 발생했습니다: {e}')
-
