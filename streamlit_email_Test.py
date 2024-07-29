@@ -5,18 +5,6 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 
-def change_chatbot_style():
-    # Set style of chat input so that it shows up at the bottom of the column
-    chat_input_style = """
-    <style>
-        .stChatInput {
-          position: fixed;
-          bottom: 3rem;
-          width: calc(100% - 2rem);
-        }
-    </style>
-    """
-    st.markdown(chat_input_style, unsafe_allow_html=True)
 
 st.title("논문 Survey")
 st.write("음식과 관련된 문장을 적어보세요")
@@ -29,57 +17,6 @@ from_email = st.secrets["EMAIL_ADDRESS"]
 from_password = st.secrets["EMAIL_PASSWORD"]
 smtp_server = "smtp.naver.com"  # Gmail SMTP 서버 주소
 smtp_port = 587  # SMTP 포트
-
-
-
-
-for idx, message in enumerate(st.session_state.messages):
-    if idx > 0:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
-if prompt := st.chat_input("What is up?"):
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
-        st.markdown(prompt)
-
-    with st.chat_message("assistant"):
-        stream = client.chat.completions.create(
-            model=st.session_state["openai_model"],
-            messages=[
-                {"role": m["role"], "content": m["content"]}
-                for m in st.session_state.messages
-            ],
-            stream=True,
-        )
-        response = st.write_stream(stream)
-    st.session_state.messages.append({"role": "assistant", "content": response})
-
-def send_email(subject, body, to_email="rollingfac@naver.com"):
-
-
-
-    msg = MIMEMultipart()
-    msg['From'] = from_email
-    msg['To'] = to_email
-    msg['Subject'] = subject
-
-    msg.attach(MIMEText(body, 'plain'))
-
-    try:
-        server = smtplib.SMTP(smtp_server, smtp_port)
-        server.starttls()
-        server.login(from_email, from_password)
-        text = msg.as_string()
-        server.sendmail(from_email, to_email, text)
-        server.quit()
-        st.success('이메일이 성공적으로 발송되었습니다!')
-    except Exception as e:
-        st.error(f'이메일 발송 중 오류가 발생했습니다: {e}')
-
-if st.button('대화내용 이메일로 보내기'):
-    email_body = '\n'.join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
-    send_email('대화내용', email_body)
 
 
 # 옵션 설정 (이전)
@@ -132,4 +69,55 @@ if "selected_option" not in st.session_state or st.session_state.selected_option
     st.session_state.messages.append({"role": "system", "content": f"{option}"})
 
 # 옵션 위치 아래로 변경
+
+
+for idx, message in enumerate(st.session_state.messages):
+    if idx > 0:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+if prompt := st.chat_input("What is up?"):
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    with st.chat_message("assistant"):
+        stream = client.chat.completions.create(
+            model=st.session_state["openai_model"],
+            messages=[
+                {"role": m["role"], "content": m["content"]}
+                for m in st.session_state.messages
+            ],
+            stream=True,
+        )
+        response = st.write_stream(stream)
+    st.session_state.messages.append({"role": "assistant", "content": response})
+
+def send_email(subject, body, to_email="rollingfac@naver.com"):
+
+
+
+    msg = MIMEMultipart()
+    msg['From'] = from_email
+    msg['To'] = to_email
+    msg['Subject'] = subject
+
+    msg.attach(MIMEText(body, 'plain'))
+
+    try:
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+        server.login(from_email, from_password)
+        text = msg.as_string()
+        server.sendmail(from_email, to_email, text)
+        server.quit()
+        st.success('이메일이 성공적으로 발송되었습니다!')
+    except Exception as e:
+        st.error(f'이메일 발송 중 오류가 발생했습니다: {e}')
+
+if st.button('대화내용 이메일로 보내기'):
+    email_body = '\n'.join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
+    send_email('대화내용', email_body)
+
+
 
