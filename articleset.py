@@ -6,13 +6,13 @@ from email.mime.multipart import MIMEMultipart
 
 st.title("논문 Survey")
 st.write("음식과 관련된 문장을 적어보세요")
-from_email = st.secrets["EMAIL_ADDRESS"]
-from_password = st.secrets["EMAIL_PASSWORD"]
+
 
 
 # API 클라이언트 설정
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-
+from_email = st.secrets["EMAIL_ADDRESS"]
+from_password = st.secrets["EMAIL_PASSWORD"]
 smtp_server = "smtp.naver.com"  # Gmail SMTP 서버 주소
 smtp_port = 587  # SMTP 포트
 
