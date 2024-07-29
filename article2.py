@@ -7,6 +7,10 @@ from email.mime.multipart import MIMEMultipart
 st.title("인선쌤 보조 용구리봇!")
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+from_email = st.secrets["EMAIL_ADDRESS"]
+from_password = st.secrets["EMAIL_PASSWORD"]
+smtp_server = "smtp.gmail.com"  # Gmail SMTP 서버 주소
+stmp_port = 587  # SMTP 포트
 
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-3.5-turbo"
@@ -55,10 +59,7 @@ if prompt := st.chat_input("What is up?"):
 
 
 def send_email(subject, body, to_email="rollingfac@gmail.com"):
-    from_email = st.secrets["EMAIL_ADDRESS"]
-    from_password = st.secrets["EMAIL_PASSWORD"]
-    smtp_server = "smtp.gmail.com"  # Gmail SMTP 서버 주소
-    stmp_port = 587  # SMTP 포트
+
 
     msg = MIMEMultipart()
     msg['From'] = from_email
