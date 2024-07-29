@@ -9,7 +9,7 @@ st.title("인선쌤 보조 용구리봇!")
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 if "openai_model" not in st.session_state:
-    st.session_state["openai_model"] = "gpt-4"
+    st.session_state["openai_model"] = "gpt-3.5-turbo"
 
     system_message = '''
 안녕! 오늘은 네가 중학교 영어 보조교사의 역할을 해줬으면 좋겠어!
@@ -53,15 +53,13 @@ if prompt := st.chat_input("What is up?"):
         response = st.write_stream(stream)
     st.session_state.messages.append({"role": "assistant", "content": response})
 
-def send_email(subject, body, to_email):
-    EMAIL_ADDRESS = st.secrets('EMAIL_ADDRESS')  # 발신자 이메일 주소
-    EMAIL_PASSWORD = st.secrets('EMAIL_PASSWORD')  # 발신자 이메일 비밀번호
-    RECIPIENT_EMAIL = "rollingfac@gmail.com"  # 수신자 이메일 주소
 
+def send_email(subject, body, to_email="rollingfac@gmail.com"):
+    from_email = st.secrets["EMAIL_ADDRESS"]
+    from_password = st.secrets["EMAIL_PASSWORD"]
     SMTP_SERVER = "smtp.gmail.com"  # Gmail SMTP 서버 주소
     SMTP_PORT = 587  # SMTP 포트
 
-    
     msg = MIMEMultipart()
     msg['From'] = from_email
     msg['To'] = to_email
@@ -81,9 +79,7 @@ def send_email(subject, body, to_email):
         st.error(f'이메일 발송 중 오류가 발생했습니다: {e}')
 
 if st.button('대화내용 이메일로 보내기'):
-    to_email = st.text_input('받는 사람 이메일:')
-    if to_email:
-        email_body = '\n'.join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
-        send_email('대화내용', email_body, to_email)
-    else:
-        st.warning('이메일 주소를 입력해주세요.')
+    email_body = '\n'.join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
+    send_email('대화내용', email_body)
+
+
