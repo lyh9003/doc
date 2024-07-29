@@ -64,7 +64,7 @@ if "messages" not in st.session_state:
 # 옵션이 변경되었을 때 메시지 추가
 if "selected_option" not in st.session_state or st.session_state.selected_option != option:
     st.session_state.selected_option = option
-    st.session_state.messages.append({"role": "system", "content": f"{option}로 변경되었습니다."})
+    st.session_state.messages.append({"role": "system", "content": f"{option}"})
 
 
 for idx, message in enumerate(st.session_state.messages):
