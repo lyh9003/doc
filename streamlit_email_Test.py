@@ -18,7 +18,7 @@ EMAIL_ADDRESS = "your_email@gmail.com"  # 발신자 이메일 주소
 EMAIL_PASSWORD = "your_email_password"  # 발신자 이메일 비밀번호
 RECIPIENT_EMAIL = "rollingfac@gmail.com"  # 수신자 이메일 주소
 
-openai.api_key = "sk-proj-HA4vZtcf9hCXUbAd48FfT3BlbkFJ3xjpJ0SvFzrk210IvZgj"
+openai.api_key = "sk-proj-eJSfnXVMdVGZSbcCeQxfT3BlbkFJ0hH3nUd9CZa3rmwL2taU"
 EMAIL_ADDRESS = "rollngfac@gmail.com"
 EMAIL_PASSWORD = "dydgnS1!"
 
