@@ -1,6 +1,6 @@
 import streamlit as st
 from datetime import datetime
-import openai  # OpenAI API를 사용한다고 가정
+import openai
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -43,7 +43,7 @@ def get_chatgpt_response(prompt):
             {"role": "user", "content": prompt}
         ]
     )
-    return response['choices'][0]['message']['content'].strip()
+    return response.choices[0].message['content'].strip()
 
 # 이메일을 보내는 함수
 def send_email(subject, body):
