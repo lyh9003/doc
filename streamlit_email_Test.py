@@ -20,7 +20,7 @@ smtp_port = 587  # SMTP 포트
 
 
 # 옵션 설정 (이전)
-change_chatbot_style()
+
 option = st.selectbox(
     '시스템 메시지를 선택하세요',
     (
