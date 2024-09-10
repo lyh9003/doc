@@ -10,7 +10,7 @@ st.write("감사합니다")
 # 사용자 정보 입력 양식
 with st.form(key='user_info_form'):
     user_name = st.text_input('이름')
-    user_grade = st.text_input('학년')
+    user_grade = st.text_input('핸드폰번호')
     submit_button = st.form_submit_button(label='정보 제출')
 
 if submit_button:
