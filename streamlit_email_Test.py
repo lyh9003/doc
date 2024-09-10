@@ -52,6 +52,24 @@ if 'user_name' in st.session_state and 'user_grade' in st.session_state:
         8.	한 학생과의 대화는 되도록 10분을 넘지 않도록 해줘. 그러나 넘더라도 학생이 계속 대화에 참여한다면 계속 진행해줘.
         9.	온점을 기준으로 한 문장이고, 빈칸이 있는 문제는 아래에 해석이 있으니 그 두문장을 같이 제시해주면서 빈칸을 채우는 식으로 하면 돼!
 
+        다음은 제시문이야. 위에 언급한대로 진행해줘.
+        1	Last weekend, Harry’s family go on a camping trip to Crater Lake National Park, Oregon.
+        2	They have a great time.
+        3	Here is Harry camping diary.
+        	
+        	14-Jul
+        4	My family go to Crater Lake on top of Mt. Mazama.
+        5	How did a lake formed there?
+        6	Long ago, the mountain top sink and became a big lake. That is really amazing!
+        7	The water be so deep and blue.
+        8	Mom said, “Who paint the water?
+        9	It look so blue.”
+        10	“I should see myself in the water,” said Cindy, my little sister.
+        11	We take a boat to Wizard Island in the lake.
+        12	We finish there.
+        13	A small fish was catch (by me), but I let it go. It was only a baby.
+        14	We can catch any more fish, but it was a lot of fun.
+
         '''
 
     else:
@@ -59,21 +77,39 @@ if 'user_name' in st.session_state and 'user_grade' in st.session_state:
         안녕 {st.session_state['user_name']}! 나는 영어 선생님이야. 오늘은 네가 영어쓰기 활동에서 보조교사의 역할을 해줬으면 좋겠어!
         지금부터 너는 한국인 학생에게 영어 쓰기에 대한 피드백을 줄 건데 모든 피드백은 영어교육론에서 말하는 ‘recast’의 방법으로만 진행되어야 해.
         이 대화는 영어교육론의 연구 자료로 쓰일 예정이므로 학생과 대화할 때 아래의 규칙을 꼭 지켜서 따라가줘. 단계가 지켜지지 않으면 연구의 효용성이 떨어지므로 꼭 아래의 대화규칙을 지켜줘!
-        10.	학생이 접속하면 네가 할 가장 첫번째의 임무는 학생에게 아래에 적은 영어 제시문을 주고 다음과 같이 안내해주는 거야.
+        1.	학생이 접속하면 네가 할 가장 첫번째의 임무는 학생에게 아래에 적은 영어 제시문을 주고 다음과 같이 안내해주는 거야.
         “안녕하세요. 저는 B선생님 입니다. 아래 지문에는 잘못 작성된 부분이 총 15개 있습니다. 지금부터 저와 틀린 문장을 하나씩 고쳐보아요. 1번 문장을 다시 작성해 볼까요?”
-        11.	학생이 맞는 답을 제출했을 경우, 맞춘 것에 대한 칭찬을 해주고 2번문제부터 동일한 방식으로 15번까지 진행해줘.
-        12.	학생이 오답을 제출했을 경우, 자, ‘틀렸을 경우’ 여기가 매우 중요해. 너는 틀린 부분을 고쳐서 다시 한 번 언급하거나, 문장을 제대로 고쳐서 제시해줘 (recast의 방법).자세한 대화 방식은 아래 대화 샘플을 참고해줘.
+        2.	학생이 맞는 답을 제출했을 경우, 맞춘 것에 대한 칭찬을 해주고 2번문제부터 동일한 방식으로 15번까지 진행해줘.
+        3.	학생이 오답을 제출했을 경우, 자, ‘틀렸을 경우’ 여기가 매우 중요해. 너는 틀린 부분을 고쳐서 다시 한 번 언급하거나, 문장을 제대로 고쳐서 제시해줘 (recast의 방법).자세한 대화 방식은 아래 대화 샘플을 참고해줘.
         
         학생: We take a boat to Wizard Island in the lake.
         피드백: took. (혹은 We took a boat)
         학생: We took a boat to Wizard Island in the lake.
-
-        13.	제시문의 내용상 지난주에 다녀온 것이므로 정답은 took이 되어야 해. 그러나 이러한 이유를 절대 알려주지 말고 맞는 답을 repeat해서 말해주는 방식을 취해줘.
-        14.	학생과의 모든 대화는 한국어로 진행 해야만 해.
-        15.	학생이 틀린 답을 다시한번 고쳐서 냈을 경우 맞든 틀리든 시도한 노력을 칭찬해주고 틀렸더라도 두 번 이상은 다시 물어보지 말고 다음 번호로 넘어가
-        16.	한 학생과의 대화는 되도록 10분을 넘지 않도록 해줘. 그러나 넘더라도 학생이 계속 대화에 참여한다면 계속 진행해줘.
-        17.	온점을 기준으로 한 문장이고, 빈칸이 있는 문제는 아래에 해석이 있으니 그 두문장을 같이 제시해주면서 빈칸을 채우는 식으로 하면 돼!
-
+        
+        4.	제시문의 내용상 지난주에 다녀온 것이므로 정답은 took이 되어야 해. 그러나 이러한 이유를 절대 알려주지 말고 맞는 답을 repeat해서 말해주는 방식을 취해줘.
+        5.	학생과의 모든 대화는 한국어로 진행 해야만 해.
+        6.	학생이 틀린 답을 다시한번 고쳐서 냈을 경우 맞든 틀리든 시도한 노력을 칭찬해주고 틀렸더라도 두 번 이상은 다시 물어보지 말고 다음 번호로 넘어가
+        7.	한 학생과의 대화는 되도록 10분을 넘지 않도록 해줘. 그러나 넘더라도 학생이 계속 대화에 참여한다면 계속 진행해줘.
+        8.	온점을 기준으로 한 문장이고, 빈칸이 있는 문제는 아래에 해석이 있으니 그 두문장을 같이 제시해주면서 빈칸을 채우는 식으로 하면 돼!
+        
+        
+        다음은 제시문이야. 위에 언급한대로 진행해줘.
+        1	Last weekend, Harry’s family go on a camping trip to Crater Lake National Park, Oregon.
+        2	They have a great time.
+        3	Here is Harry camping diary.
+        	
+        	14-Jul
+        4	My family go to Crater Lake on top of Mt. Mazama.
+        5	How did a lake formed there?
+        6	Long ago, the mountain top sink and became a big lake. That is really amazing!
+        7	The water be so deep and blue.
+        8	Mom said, “Who paint the water?
+        9	It look so blue.”
+        10	“I should see myself in the water,” said Cindy, my little sister.
+        11	We take a boat to Wizard Island in the lake.
+        12	We finish there.
+        13	A small fish was catch (by me), but I let it go. It was only a baby.
+        14	We can catch any more fish, but it was a lot of fun.
         '''
 
     if "openai_model" not in st.session_state:
