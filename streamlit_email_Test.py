@@ -111,26 +111,12 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         st.success('A선생님으로 시작하겠습니다.')
         if "messages" not in st.session_state:
             st.session_state.messages = [{"role": "system", "content": system_message_A}]
-    
-#        # 사용자에게 시스템 메시지를 제외하고 나머지 메시지를 표시
-#        for idx, message in enumerate(st.session_state.messages):
-#            # 시스템 메시지를 제외하고 사용자와 GPT의 대화만 표시
-#            if message["role"] != "system":
-#                with st.chat_message(message["role"]):
-#                    st.markdown(message["content"])
 
     else:
         st.success('B선생님으로 시작하겠습니다.')
         if "messages" not in st.session_state:
             st.session_state.messages = [{"role": "system", "content": system_message_B}]
-    
-#        # 사용자에게 시스템 메시지를 제외하고 나머지 메시지를 표시
-#        for idx, message in enumerate(st.session_state.messages):
-#            # 시스템 메시지를 제외하고 사용자와 GPT의 대화만 표시
-#            if message["role"] != "system":
-#                with st.chat_message(message["role"]):
-#                    st.markdown(message["content"])
-        
+
 
     if "openai_model" not in st.session_state:
         st.session_state["openai_model"] = "gpt-3.5-turbo"
@@ -204,14 +190,14 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
                 st.session_state.messages = [
                     msg for msg in st.session_state.messages if msg["content"] != system_message_A
                 ]
-                st.session_state.messages({"role": "system", "content": system_message_B})
+                st.session_state.messages = [{"role": "system", "content": system_message_B}]
             else:
                 st.session_state.selected_option = '옵션 1: Explicit [Metalinguistic] A선생님'
                 st.success("A선생님으로 변경되었습니다.")
                 st.session_state.messages = [
                     msg for msg in st.session_state.messages if msg["content"] != system_message_B
                 ]
-                st.session_state.messages({"role": "system", "content": system_message_A})
+                st.session_state.messages = [{"role": "system", "content": system_message_A}]
 
             
             # 버튼이 눌렸음을 기록하여 버튼을 사라지게 함
