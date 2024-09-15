@@ -32,6 +32,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
 
     # 첫 대화용 시스템 메시지 설정
     if st.session_state.selected_option == '옵션 1: Explicit [Metalinguistic] A선생님':
+        st.success('A선생님으로 시작하겠습니다.')
         system_message = f'''
         안녕 {st.session_state['user_name']} Explicit [Metalinguistic] A선생님
         안녕하세요! 나는 영어 선생님입니다. 오늘은 당신이 영어쓰기 활동에서 보조교사의 역할을 해줬으면 좋겠어요.
@@ -71,6 +72,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
 
 
     else:
+        st.success('B선생님으로 시작하겠습니다.')
         system_message = f'''
 
         안녕 {st.session_state['user_name']}! Implicit [Recast] B선생님
@@ -170,16 +172,30 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         email_body += '\n'.join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
         send_email('대화내용', email_body)
 
-    # 대화가 끝난 후 버튼을 누르면 남은 옵션으로 전환
-    if st.button('다음 선생님과 대화 시작하기'):
-        # 선택되지 않은 다른 옵션으로 전환
-        if st.session_state.selected_option == '옵션 1: Explicit [Metalinguistic] A선생님':
-            st.session_state.selected_option = '옵션 2: Implicit [Recast] B선생님'
-        else:
-            st.session_state.selected_option = '옵션 1: Explicit [Metalinguistic] A선생님'
+    # 버튼이 이미 눌렸는지 확인 (선생님을 한 번 바꾸면 버튼 사라짐)
+    if "next_teacher_clicked" not in st.session_state:
+        # 대화가 끝난 후 버튼을 누르면 남은 옵션으로 전환
+        if st.button('다음 선생님과 대화 시작하기'):
+            # 선택되지 않은 다른 옵션으로 전환
+            if st.session_state.selected_option == '옵션 1: Explicit [Metalinguistic] A선생님':
+                st.session_state.selected_option = '옵션 2: Implicit [Recast] B선생님'
+                system_message = f'''
+                안녕 {st.session_state['user_name']} Implicit [Recast] B선생님
+                ...
+                '''  # '옵션 2'의 시스템 메시지
+            else:
+                st.session_state.selected_option = '옵션 1: Explicit [Metalinguistic] A선생님'
+                system_message = f'''
+                안녕 {st.session_state['user_name']} Explicit [Metalinguistic] A선생님
+                ...
+                '''  # '옵션 1'의 시스템 메시지
 
-        # 새로운 시스템 메시지만 추가하고 이전 메시지는 유지
-        st.session_state.messages.append({"role": "system", "content": system_message})
+            # 새로운 시스템 메시지만 세션에 추가 (화면에는 표시하지 않음)
+            st.session_state.messages.append({"role": "system", "content": system_message})
+            st.success("다른 유형 선생님으로 변경되었습니다.")
+            
+            # 버튼이 눌렸음을 기록하여 버튼을 사라지게 함
+            st.session_state["next_teacher_clicked"] = True
 
 else:
     st.write("먼저 사용자 정보를 입력해주세요.")
