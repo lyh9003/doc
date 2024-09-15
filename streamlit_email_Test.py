@@ -1,3 +1,5 @@
+
+import random
 from openai import OpenAI
 import streamlit as st
 import smtplib
@@ -21,17 +23,15 @@ if submit_button:
 if 'user_name' in st.session_state and 'user_number' in st.session_state:
     st.write(f"안녕하세요^^ {st.session_state['user_name']} 님!")
 
-    # 옵션 설정 (이전)
-    option = st.selectbox(
-        '인사하며 대화를 시작해보세요',
-        (
+    # 옵션 설정 (무작위 선택)
+    if "selected_option" not in st.session_state:
+        st.session_state.selected_option = random.choice([
             '옵션 1: Explicit [Metalinguistic] A선생님',
             '옵션 2: Implicit [Recast] B선생님'
-        )
-    )
+        ])
 
-    # 시스템 메시지 설정
-    if option == '옵션 1: Explicit [Metalinguistic] A선생님':
+    # 첫 대화용 시스템 메시지 설정
+    if st.session_state.selected_option == '옵션 1: Explicit [Metalinguistic] A선생님':
         system_message = f'''
         안녕 {st.session_state['user_name']} Explicit [Metalinguistic] A선생님
         안녕하세요! 나는 영어 선생님입니다. 오늘은 당신이 영어쓰기 활동에서 보조교사의 역할을 해줬으면 좋겠어요.
@@ -67,11 +67,12 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         12	We finish there.
         13	A small fish was catch (by me), but I let it go. It was only a baby.
         14	We can catch any more fish, but it was a lot of fun.
-
         '''
+
 
     else:
         system_message = f'''
+
         안녕 {st.session_state['user_name']}! Implicit [Recast] B선생님
         안녕하세요! 나는 영어 선생님입니다. 오늘은 네가 영어 쓰기 활동에서 보조교사의 역할을 해줬으면 좋겠어요.
         지금부터 너는 한국인 학생에게 영어 쓰기에 대한 피드백을 줄 건데, 모든 피드백은 영어교육론에서 말하는 recast의 방법으로만 진행해야 해요.
@@ -113,18 +114,12 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
 
     if "messages" not in st.session_state:
         st.session_state.messages = [{"role": "system", "content": system_message}]
-
-    # 옵션이 변경되었을 때 메시지 추가
-    if "selected_option" not in st.session_state or st.session_state.selected_option != option:
-        st.session_state.selected_option = option
-        st.session_state.messages.append({"role": "system", "content": f"{option}"})
+    else:
+        # 이전 메시지가 유지되도록 새로운 시스템 메시지를 추가
+        st.session_state.messages.append({"role": "system", "content": system_message})
 
     # API 클라이언트 설정
     client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-    from_email = st.secrets["EMAIL_ADDRESS"]
-    from_password = st.secrets["EMAIL_PASSWORD"]
-    smtp_server = "smtp.naver.com"  # SMTP 서버 주소
-    smtp_port = 587  # SMTP 포트
 
     for idx, message in enumerate(st.session_state.messages):
         if idx > 0:
@@ -148,20 +143,21 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
             response = st.write_stream(stream)
         st.session_state.messages.append({"role": "assistant", "content": response})
 
+    # 이메일 발송 함수
     def send_email(subject, body, to_email="rollingfac@naver.com"):
         msg = MIMEMultipart()
-        msg['From'] = from_email
+        msg['From'] = st.secrets["EMAIL_ADDRESS"]
         msg['To'] = to_email
         msg['Subject'] = subject
 
         msg.attach(MIMEText(body, 'plain'))
 
         try:
-            server = smtplib.SMTP(smtp_server, smtp_port)
+            server = smtplib.SMTP("smtp.naver.com", 587)
             server.starttls()
-            server.login(from_email, from_password)
+            server.login(st.secrets["EMAIL_ADDRESS"], st.secrets["EMAIL_PASSWORD"])
             text = msg.as_string()
-            server.sendmail(from_email, to_email, text)
+            server.sendmail(st.secrets["EMAIL_ADDRESS"], to_email, text)
             server.quit()
             st.success('이메일이 성공적으로 발송되었습니다!')
         except Exception as e:
@@ -169,9 +165,21 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
 
     if st.button('대화내용 이메일로 보내기'):
         email_body = f"사용자 이름: {st.session_state['user_name']}\n"
-        email_body += f"사용자 학년: {st.session_state['user_number']}\n\n"
+        email_body += f"사용자 핸드폰 번호: {st.session_state['user_number']}\n\n"
         email_body += "대화 내용:\n"
         email_body += '\n'.join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
         send_email('대화내용', email_body)
+
+    # 대화가 끝난 후 버튼을 누르면 남은 옵션으로 전환
+    if st.button('다음 선생님과 대화 시작하기'):
+        # 선택되지 않은 다른 옵션으로 전환
+        if st.session_state.selected_option == '옵션 1: Explicit [Metalinguistic] A선생님':
+            st.session_state.selected_option = '옵션 2: Implicit [Recast] B선생님'
+        else:
+            st.session_state.selected_option = '옵션 1: Explicit [Metalinguistic] A선생님'
+
+        # 새로운 시스템 메시지만 추가하고 이전 메시지는 유지
+        st.session_state.messages.append({"role": "system", "content": system_message})
+
 else:
     st.write("먼저 사용자 정보를 입력해주세요.")
