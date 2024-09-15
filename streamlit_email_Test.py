@@ -67,9 +67,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         12	We finish there.
         13	A small fish was catch (by me), but I let it go. It was only a baby.
         14	We can catch any more fish, but it was a lot of fun.
-        '''
-
-
+        '''  # '옵션 1'의 시스템 메시지
     else:
         system_message = f'''
 
@@ -107,31 +105,28 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         12	We finish there.
         13	A small fish was catch (by me), but I let it go. It was only a baby.
         14	We can catch any more fish, but it was a lot of fun.
-        '''
+        '''  # '옵션 2'의 시스템 메시지
 
     if "openai_model" not in st.session_state:
         st.session_state["openai_model"] = "gpt-4o"
 
     if "messages" not in st.session_state:
         st.session_state.messages = [{"role": "system", "content": system_message}]
-#    else:
-#        # 이전 메시지가 유지되도록 새로운 시스템 메시지를 추가
-#        st.session_state.messages.append({"role": "system", "content": system_message})
 
-    # API 클라이언트 설정
-    client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-
+    # 이전 메시지 보여주기
     for idx, message in enumerate(st.session_state.messages):
         if idx > 0:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
 
+    # 대화 입력 처리
     if prompt := st.chat_input("What is up?"):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
 
         with st.chat_message("assistant"):
+            client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
             stream = client.chat.completions.create(
                 model=st.session_state["openai_model"],
                 messages=[
@@ -175,10 +170,18 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         # 선택되지 않은 다른 옵션으로 전환
         if st.session_state.selected_option == '옵션 1: Explicit [Metalinguistic] A선생님':
             st.session_state.selected_option = '옵션 2: Implicit [Recast] B선생님'
+            system_message = f'''
+            안녕 {st.session_state['user_name']} Implicit [Recast] B선생님
+            ...
+            '''  # '옵션 2'의 시스템 메시지
         else:
             st.session_state.selected_option = '옵션 1: Explicit [Metalinguistic] A선생님'
+            system_message = f'''
+            안녕 {st.session_state['user_name']} Explicit [Metalinguistic] A선생님
+            ...
+            '''  # '옵션 1'의 시스템 메시지
 
-        # 새로운 시스템 메시지만 추가하고 이전 메시지는 유지
+        # 새로운 시스템 메시지만 추가
         st.session_state.messages.append({"role": "system", "content": system_message})
 
 else:
