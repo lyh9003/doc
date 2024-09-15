@@ -130,26 +130,25 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
 
-    # 대화 입력 처리
+     # 대화 입력 처리
     if prompt := st.chat_input("메시지를 입력하세요"):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
 
         # 메시지를 보내기 위한 OpenAI API 호출
-        client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-        response = client.ChatCompletion.create(
+        response = openai.ChatCompletion.create(
             model=st.session_state["openai_model"],
             messages=[m for m in st.session_state.messages if m["role"] != "system"],  # 시스템 메시지를 제외하고 보냄
-            stream=False  # stream=True를 False로 설정
+            stream=False  # stream=False로 설정
         )
 
         # 응답 메시지를 추가
-        st.session_state.messages.append({"role": "assistant", "content": response.choices[0].message['content']})
+        st.session_state.messages.append({"role": "assistant", "content": response['choices'][0]['message']['content']})
         
         # 대화창에 assistant 메시지 출력
         with st.chat_message("assistant"):
-            st.markdown(response.choices[0].message['content'])
+            st.markdown(response['choices'][0]['message']['content'])
 
     # 이메일 발송 함수
     def send_email(subject, body, to_email="rollingfac@naver.com"):
