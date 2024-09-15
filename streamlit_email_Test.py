@@ -114,9 +114,9 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
 
     if "messages" not in st.session_state:
         st.session_state.messages = [{"role": "system", "content": system_message}]
-    else:
-        # 이전 메시지가 유지되도록 새로운 시스템 메시지를 추가
-        st.session_state.messages.append({"role": "system", "content": system_message})
+#    else:
+#        # 이전 메시지가 유지되도록 새로운 시스템 메시지를 추가
+#        st.session_state.messages.append({"role": "system", "content": system_message})
 
     # API 클라이언트 설정
     client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
