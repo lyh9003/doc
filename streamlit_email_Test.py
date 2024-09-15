@@ -116,6 +116,15 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     if "openai_model" not in st.session_state:
         st.session_state["openai_model"] = "gpt-3.5-turbo"
 
+
+    if "messages" not in st.session_state:
+        # 시스템 메시지는 내부적으로 저장하되 화면에 표시하지 않음
+        st.session_state.messages = [{"role": "system", "content": system_message}]
+    else:
+        # 대화 기록은 유지되고 시스템 메시지를 내부적으로만 추가
+        st.session_state.messages.append({"role": "system", "content": system_message})
+
+    
     if "messages" not in st.session_state:
         st.session_state.messages = [{"role": "system", "content": system_message}]
         
@@ -123,9 +132,9 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         # 새로운 시스템 메시지를 추가하되 기존 대화는 유지
         st.session_state.messages.append({"role": "system", "content": system_message})
         
-    # 이전 메시지 보여주기
+    # 이전 메시지 보여주기 (system_message는 화면에 렌더링하지 않음)
     for idx, message in enumerate(st.session_state.messages):
-        if idx > 0:
+        if message["role"] != "system":  # 시스템 메시지는 렌더링하지 않음
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
 
@@ -142,6 +151,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
                 messages=[
                     {"role": m["role"], "content": m["content"]}
                     for m in st.session_state.messages
+                    if m["role"] != "system"  # 시스템 메시지는 API 호출에 포함되지 않음
                 ],
                 stream=True,
             )
