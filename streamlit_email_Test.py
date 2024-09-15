@@ -121,42 +121,35 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         # 시스템 메시지는 내부적으로 저장하되 화면에 표시하지 않음
         st.session_state.messages = [{"role": "system", "content": system_message}]
     else:
-        # 대화 기록은 유지되고 시스템 메시지를 내부적으로만 추가
-        st.session_state.messages.append({"role": "system", "content": system_message})
+        # 시스템 메시지를 덮어쓰지 않고, 대화 기록을 유지
+        st.session_state.messages = [{"role": "system", "content": system_message}] + st.session_state.messages
 
-    
-    if "messages" not in st.session_state:
-        st.session_state.messages = [{"role": "system", "content": system_message}]
-        
-    else:
-        # 새로운 시스템 메시지를 추가하되 기존 대화는 유지
-        st.session_state.messages.append({"role": "system", "content": system_message})
-        
     # 이전 메시지 보여주기 (system_message는 화면에 렌더링하지 않음)
-    for idx, message in enumerate(st.session_state.messages):
+    for message in st.session_state.messages:
         if message["role"] != "system":  # 시스템 메시지는 렌더링하지 않음
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
 
     # 대화 입력 처리
-    if prompt := st.chat_input("What is up?"):
+    if prompt := st.chat_input("메시지를 입력하세요"):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
 
+        # 메시지를 보내기 위한 OpenAI API 호출
+        client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+        response = client.ChatCompletion.create(
+            model=st.session_state["openai_model"],
+            messages=[m for m in st.session_state.messages if m["role"] != "system"],  # 시스템 메시지를 제외하고 보냄
+            stream=False  # stream=True를 False로 설정
+        )
+
+        # 응답 메시지를 추가
+        st.session_state.messages.append({"role": "assistant", "content": response.choices[0].message['content']})
+        
+        # 대화창에 assistant 메시지 출력
         with st.chat_message("assistant"):
-            client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-            stream = client.chat.completions.create(
-                model=st.session_state["openai_model"],
-                messages=[
-                    {"role": m["role"], "content": m["content"]}
-                    for m in st.session_state.messages
-                    if m["role"] != "system"  # 시스템 메시지는 API 호출에 포함되지 않음
-                ],
-                stream=True,
-            )
-            response = st.write_stream(stream)
-        st.session_state.messages.append({"role": "assistant", "content": response})
+            st.markdown(response.choices[0].message['content'])
 
     # 이메일 발송 함수
     def send_email(subject, body, to_email="rollingfac@naver.com"):
