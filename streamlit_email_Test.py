@@ -21,7 +21,8 @@ if submit_button:
 
 # 사용자 정보가 입력되었을 때만 대화 시작
 if 'user_name' in st.session_state and 'user_number' in st.session_state:
-    st.write(f"안녕하세요^^ {st.session_state['user_name']} 님!")
+    st.write(f"안녕하세요^^ {st.session_state['user_name']} 님! 우선 가볍게 대화로 시작해주시고, 
+                처음에 지문이 나오지 않을 시 전체 지문을 달라고 해주시면 됩니다.")
 
     # 옵션 설정 (무작위 선택)
     if "selected_option" not in st.session_state:
