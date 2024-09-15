@@ -114,7 +114,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         '''  # '옵션 2'의 시스템 메시지
 
     if "openai_model" not in st.session_state:
-        st.session_state["openai_model"] = "gpt-4o"
+        st.session_state["openai_model"] = "gpt-3.5-turbo"
 
     if "messages" not in st.session_state:
         st.session_state.messages = [{"role": "system", "content": system_message}]
@@ -251,8 +251,8 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         14	We can catch any more fish, but it was a lot of fun.
             '''  # '옵션 1'의 시스템 메시지
 
-        # 새로운 시스템 메시지만 추가하고 사용자에게는 변경된 메시지만 보여줌
-        st.session_state.messages.append({"role": "system", "content": system_message})
+        # 새로운 시스템 메시지만 세션에 추가 (화면에는 표시하지 않음)
+        st.session_state.messages[0]["content"] = system_message
         st.success("다른 유형 선생님으로 변경되었습니다.")
 
 else:
