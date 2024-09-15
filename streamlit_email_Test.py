@@ -105,6 +105,9 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     14	We can catch any more fish, but it was a lot of fun.
     '''
 
+    if "messages" not in st.session_state:
+    st.session_state.messages = []
+    
     # 사용자에게 시스템 메시지를 제외하고 나머지 메시지를 표시
     for idx, message in enumerate(st.session_state.messages):
         # 시스템 메시지를 제외하고 사용자와 GPT의 대화만 표시
