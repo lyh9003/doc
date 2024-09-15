@@ -176,6 +176,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         # 선택되지 않은 다른 옵션으로 전환
         if st.session_state.selected_option == '옵션 1: Explicit [Metalinguistic] A선생님':
             st.session_state.selected_option = '옵션 2: Implicit [Recast] B선생님'
+            st.success("B선생님으로 변경되었습니다.")
             system_message = f'''
             안녕 {st.session_state['user_name']}! Implicit [Recast] B선생님
             안녕하세요! 나는 영어 선생님입니다. 오늘은 네가 영어 쓰기 활동에서 보조교사의 역할을 해줬으면 좋겠어요.
@@ -215,6 +216,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         else:
             st.session_state.selected_option = '옵션 1: Explicit [Metalinguistic] A선생님'
             system_message = f'''
+            st.success("A선생님으로 변경되었습니다.")
             안녕 {st.session_state['user_name']} Explicit [Metalinguistic] A선생님
             안녕하세요! 나는 영어 선생님입니다. 오늘은 당신이 영어쓰기 활동에서 보조교사의 역할을 해줬으면 좋겠어요.
             지금부터 당신은 한국인 학생에게 영어 쓰기에 대한 피드백을 줄 건데, 모든 피드백은 영어교육론에서 말하는 ‘explicit corrective feedback 중 metalinguistic’의 방법으로만 진행해야 합니다.
