@@ -18,15 +18,15 @@ with st.form(key='user_info_form'):
     submit_button = st.form_submit_button(label='정보 제출')
     send_email_button = st.form_submit_button(label='대화내용 이메일로 보내기')
         if st.button('대화내용 이메일로 보내기'):
-        email_body = f"사용자 이름: {st.session_state['user_name']}\n"
-        email_body += f"사용자 핸드폰 번호: {st.session_state['user_number']}\n\n"
-        email_body += "대화 내용:\n"
-    
-        # 저장된 대화와 현재 대화를 모두 포함
-        all_messages = st.session_state['saved_conversation'] + st.session_state.messages
-        email_body += '\n'.join([f"{msg['role']}: {msg['content']}" for msg in all_messages])
+            email_body = f"사용자 이름: {st.session_state['user_name']}\n"
+            email_body += f"사용자 핸드폰 번호: {st.session_state['user_number']}\n\n"
+            email_body += "대화 내용:\n"
+        
+            # 저장된 대화와 현재 대화를 모두 포함
+            all_messages = st.session_state['saved_conversation'] + st.session_state.messages
+            email_body += '\n'.join([f"{msg['role']}: {msg['content']}" for msg in all_messages])
 
-        send_email('대화내용', email_body)
+            send_email('대화내용', email_body)
 
 if submit_button:
     st.session_state['user_name'] = user_name
