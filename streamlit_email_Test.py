@@ -112,24 +112,24 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         if "messages" not in st.session_state:
             st.session_state.messages = [{"role": "system", "content": system_message_A}]
     
-        # 사용자에게 시스템 메시지를 제외하고 나머지 메시지를 표시
-        for idx, message in enumerate(st.session_state.messages):
-            # 시스템 메시지를 제외하고 사용자와 GPT의 대화만 표시
-            if message["role"] != "system":
-                with st.chat_message(message["role"]):
-                    st.markdown(message["content"])
+#        # 사용자에게 시스템 메시지를 제외하고 나머지 메시지를 표시
+#        for idx, message in enumerate(st.session_state.messages):
+#            # 시스템 메시지를 제외하고 사용자와 GPT의 대화만 표시
+#            if message["role"] != "system":
+#                with st.chat_message(message["role"]):
+#                    st.markdown(message["content"])
 
     else:
         st.success('B선생님으로 시작하겠습니다.')
         if "messages" not in st.session_state:
             st.session_state.messages = [{"role": "system", "content": system_message_B}]
     
-        # 사용자에게 시스템 메시지를 제외하고 나머지 메시지를 표시
-        for idx, message in enumerate(st.session_state.messages):
-            # 시스템 메시지를 제외하고 사용자와 GPT의 대화만 표시
-            if message["role"] != "system":
-                with st.chat_message(message["role"]):
-                    st.markdown(message["content"])
+#        # 사용자에게 시스템 메시지를 제외하고 나머지 메시지를 표시
+#        for idx, message in enumerate(st.session_state.messages):
+#            # 시스템 메시지를 제외하고 사용자와 GPT의 대화만 표시
+#            if message["role"] != "system":
+#                with st.chat_message(message["role"]):
+#                    st.markdown(message["content"])
         
 
     if "openai_model" not in st.session_state:
