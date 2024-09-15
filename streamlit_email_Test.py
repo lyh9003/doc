@@ -204,14 +204,14 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
                 st.session_state.messages = [
                     msg for msg in st.session_state.messages if msg["content"] != system_message_A
                 ]
-                st.session_state.messages.append({"role": "system", "content": system_message_B})
+                st.session_state.messages({"role": "system", "content": system_message_B})
             else:
                 st.session_state.selected_option = '옵션 1: Explicit [Metalinguistic] A선생님'
                 st.success("A선생님으로 변경되었습니다.")
                 st.session_state.messages = [
                     msg for msg in st.session_state.messages if msg["content"] != system_message_B
                 ]
-                st.session_state.messages.append({"role": "system", "content": system_message_A})
+                st.session_state.messages({"role": "system", "content": system_message_A})
 
             
             # 버튼이 눌렸음을 기록하여 버튼을 사라지게 함
