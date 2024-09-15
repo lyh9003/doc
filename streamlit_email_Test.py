@@ -33,9 +33,9 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
 
         # 첫 번째 랜덤 선택 시 사용자에게 알림 표시
         if st.session_state.selected_option == '옵션 1: Explicit [Metalinguistic] A선생님':
-            st.success("A 선생님 (Explicit [Metalinguistic])이 선택되었습니다.")
+            st.success("A 선생님이 선택되었습니다.")
         else:
-            st.success("B 선생님 (Implicit [Recast])이 선택되었습니다.")
+            st.success("B 선생님이 선택되었습니다.")
 
     # 첫 대화용 시스템 메시지 설정
     if st.session_state.selected_option == '옵션 1: Explicit [Metalinguistic] A선생님':
@@ -118,7 +118,11 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
 
     if "messages" not in st.session_state:
         st.session_state.messages = [{"role": "system", "content": system_message}]
-
+        
+    else:
+        # 새로운 시스템 메시지를 추가하되 기존 대화는 유지
+        st.session_state.messages.append({"role": "system", "content": system_message})
+        
     # 이전 메시지 보여주기
     for idx, message in enumerate(st.session_state.messages):
         if idx > 0:
