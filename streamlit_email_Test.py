@@ -257,11 +257,12 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
                 '''  # '옵션 1'의 시스템 메시지
 
             # 새로운 시스템 메시지만 세션에 추가 (화면에는 표시하지 않음)
-            st.session_state.messages.append = [{"role": "system", "content": system_message}]
+            st.session_state.messages.append({"role": "system", "content": system_message})
             
             
             # 버튼이 눌렸음을 기록하여 버튼을 사라지게 함
             st.session_state["next_teacher_clicked"] = True
+
 
 else:
     st.write("먼저 사용자 정보를 입력해주세요.")
