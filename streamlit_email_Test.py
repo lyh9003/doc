@@ -106,7 +106,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     '''
 
     if "messages" not in st.session_state:
-    st.session_state.messages = []
+        st.session_state.messages = []
     
     # 사용자에게 시스템 메시지를 제외하고 나머지 메시지를 표시
     for idx, message in enumerate(st.session_state.messages):
