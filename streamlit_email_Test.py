@@ -6,7 +6,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-st.title("한국외대 교육대학원 영어교육과 연구참여")
+st.title("한국외대 교육대학원 \n 영어교육과 연구참여 대화봇")
 st.write("감사합니다")
 
 # 사용자 정보 입력 양식
@@ -29,7 +29,7 @@ if 'saved_conversation' not in st.session_state:
 
 # 사용자 정보가 입력되었을 때만 대화 시작
 if 'user_name' in st.session_state and 'user_number' in st.session_state:
-    st.write(f"안녕하세요^^ {st.session_state['user_name']} 님! 우선 가볍게 인사로 대화를 시작해주시고,\n처음에 지문이 나오지 않을 시 전체 지문을 달라고 해주시면 됩니다.")
+    st.write(f"안녕하세요^^ {st.session_state['user_name']} 님! 우선 가볍게 인사로 대화를 시작해주시고,\n 처음에 지문이 나오지 않을 시 전체 지문을 달라고 해주시면 됩니다. 문장을 다 적지 않고 답만 말하셔도 되며, 도저히 답을 모르겠을 경우 모른다고 말씀해주세요!")
 
     # 옵션 설정 (무작위 선택)
     if "selected_option" not in st.session_state:
