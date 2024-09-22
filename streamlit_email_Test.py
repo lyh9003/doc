@@ -26,7 +26,7 @@ with st.form(key='user_info_form'):
     user_name = st.text_input('이름')
     user_number = st.text_input('핸드폰번호 (-)을 포함하여')
     submit_button = st.form_submit_button(label='정보 제출')
-    send_email_button = st.form_submit_button(label='대화내용 이메일로 보내기')
+#    send_email_button = st.form_submit_button(label='대화내용 이메일로 보내기')
 
 
 if submit_button:
