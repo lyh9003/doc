@@ -10,7 +10,7 @@ from email.mime.multipart import MIMEMultipart
 st.set_page_config(layout="wide")
 
 # TITLE 제목
-st.title("AI를 활용한 영어쓰기 오류 피드백 연구")
+st.title("AI활용 영어쓰기 피드백연구")
 
 
 # 사용자 정보 입력 양식
