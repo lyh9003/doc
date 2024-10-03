@@ -42,8 +42,7 @@ if 'saved_conversation' not in st.session_state:
 
 # 사용자 정보가 입력되었을 때만 대화 시작
 if 'user_name' in st.session_state and 'user_number' in st.session_state:
-    st.write(f"""안녕하세요^^ {st.session_state['user_name']} 님! 우선 가볍게 인사로 대화를 시작해주시고,<br> 
-    처음에 지문이 나오지 않을 시 전체 지문을 달라고 해주시면 됩니다.<br> 
+    st.write(f"""안녕하세요^^ {st.session_state['user_name']} 님! 우선 가볍게 인사로 대화를 시작해주시고, 처음에 지문이 나오지 않을 시 전체 지문을 달라고 해주시면 됩니다.<br> 
     문장을 다 적지 않고 답만 말하셔도 되며, 도저히 답을 모르겠을 경우 모른다고 말씀해주세요.<br>
     10문제를 풀기 전까지는 절대 대화 종료 및 다음 선생님과 대화 버튼을 누르지 마세요!""", unsafe_allow_html=True)
 
@@ -161,7 +160,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
 
-    if prompt := st.chat_input("What is up?"):
+    if prompt := st.chat_input("대화를 입력해 주세요."):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
@@ -199,22 +198,13 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         except Exception as e:
             st.error(f'대화 중 오류가 발생했습니다: {e}')
 
-    if st.button('대화 종료하기'):
-        email_body = f"사용자 이름: {st.session_state['user_name']}\n"
-        email_body += f"사용자 핸드폰 번호: {st.session_state['user_number']}\n\n"
-        email_body += "대화 내용:\n"
-            
-        # 저장된 대화와 현재 대화를 모두 포함
-        all_messages = st.session_state['saved_conversation'] + st.session_state.messages
-        email_body += '\n'.join([f"{msg['role']}: {msg['content']}" for msg in all_messages])
-    
-        send_email('대화내용', email_body)
+
 
 
     # 버튼이 이미 눌렸는지 확인 (선생님을 한 번 바꾸면 버튼 사라짐)
     if "next_teacher_clicked" not in st.session_state:
         # 대화가 끝난 후 버튼을 누르면 남은 옵션으로 전환
-        if st.button('다음 선생님과 대화 시작하기'):
+        if st.button('다음 선생님과 대화 시작하기(첫 10문제 완료 이후)'):
             # 선택되지 않은 다른 옵션으로 전환
             st.session_state['saved_conversation'].extend(st.session_state.messages) # 이전 대화 저장하기
             
@@ -236,7 +226,17 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
             
             # 버튼이 눌렸음을 기록하여 버튼을 사라지게 함
             st.session_state["next_teacher_clicked"] = True
-
+            
+    if st.button('대화 종료하기(마지막)'):
+        email_body = f"사용자 이름: {st.session_state['user_name']}\n"
+        email_body += f"사용자 핸드폰 번호: {st.session_state['user_number']}\n\n"
+        email_body += "대화 내용:\n"
+            
+        # 저장된 대화와 현재 대화를 모두 포함
+        all_messages = st.session_state['saved_conversation'] + st.session_state.messages
+        email_body += '\n'.join([f"{msg['role']}: {msg['content']}" for msg in all_messages])
+    
+        send_email('대화내용', email_body)
 
 else:
     st.write("먼저 사용자 정보를 입력해주세요.")
