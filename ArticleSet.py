@@ -227,7 +227,6 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
             server.sendmail(st.secrets["EMAIL_ADDRESS"], to_email, text)
             server.quit()
             st.success('대화가 성공적으로 종료되었습니다. 감사합니다!')
-            st.stop()  # 이후의 코드를 실행하지 않도록 함
         except Exception as e:
             st.error(f'대화 중 오류가 발생했습니다: {e}')
 
