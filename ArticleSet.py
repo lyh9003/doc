@@ -165,12 +165,12 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
 
                 
     if st.session_state.selected_option == '옵션 1: Explicit [Metalinguistic] A선생님':
-        st.success('A선생님으로 시작하겠습니다.')
+        st.success('A선생님 입니다.')
         if "messages" not in st.session_state:
             st.session_state.messages = [{"role": "system", "content": system_message_A}]
 
     else:
-        st.success('B선생님으로 시작하겠습니다.')
+        st.success('B선생님 입니다.')
         if "messages" not in st.session_state:
             st.session_state.messages = [{"role": "system", "content": system_message_B}]
 
@@ -242,14 +242,14 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
             
             if st.session_state.selected_option == '옵션 1: Explicit [Metalinguistic] A선생님':
                 st.session_state.selected_option = '옵션 2: Implicit [Recast] B선생님'
-                st.success("B선생님으로 변경되었습니다.")
+                st.success("B선생님으로 변경되었습니다. 인사로 대화를 시작해 주세요.")
                 st.session_state.messages = [
                     msg for msg in st.session_state.messages if msg["content"] != system_message_A
                 ]
                 st.session_state.messages = [{"role": "system", "content": system_message_B}]
             else:
                 st.session_state.selected_option = '옵션 1: Explicit [Metalinguistic] A선생님'
-                st.success("A선생님으로 변경되었습니다.")
+                st.success("A선생님으로 변경되었습니다. 인사로 대화를 시작해 주세요.")
                 st.session_state.messages = [
                     msg for msg in st.session_state.messages if msg["content"] != system_message_B
                 ]
