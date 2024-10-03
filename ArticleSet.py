@@ -10,19 +10,21 @@ st.title("한국외대 교육대학원 \n 영어교육과 연구참여 대화봇
 st.write("감사합니다")
 
 # 사용자 정보 입력 양식
+if 'user_info_submitted' not in st.session_state:
+    st.session_state['user_info_submitted'] = False
 
+if not st.session_state['user_info_submitted']:
+    with st.form(key='user_info_form'):
+        user_name = st.text_input('이름')
+        user_number = st.text_input('핸드폰번호 (-)을 포함하여')
+        submit_button = st.form_submit_button(label='정보 제출')
 
-with st.form(key='user_info_form'):
-    user_name = st.text_input('이름')
-    user_number = st.text_input('핸드폰번호 (-)을 포함하여')
-    submit_button = st.form_submit_button(label='정보 제출')
-#    send_email_button = st.form_submit_button(label='대화내용 이메일로 보내기')
+    if submit_button:
+        st.session_state['user_name'] = user_name
+        st.session_state['user_number'] = user_number
+        st.session_state['user_info_submitted'] = True
 
-
-if submit_button:
-    st.session_state['user_name'] = user_name
-    st.session_state['user_number'] = user_number
-
+    
 if 'saved_conversation' not in st.session_state:
     # 이전 대화를 저장할 변수를 초기화
     st.session_state['saved_conversation'] = []
