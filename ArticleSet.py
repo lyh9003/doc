@@ -14,7 +14,8 @@ if 'user_info_submitted' not in st.session_state:
     st.session_state['user_info_submitted'] = False
 
 if not st.session_state['user_info_submitted']:
-    st.write("""안녕하세요?\n
+    st.write("""
+    안녕하세요?\n
     한국외대 교육대학원 영어교육전공 김인선 입니다.\n
     연구에 참여해 주셔서 감사합니다.\n
     참여자 정보 확인을 위해 아래 이름과 핸드폰 번호를 기재해 주세요.\n
