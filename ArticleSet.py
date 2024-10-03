@@ -131,7 +131,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     13	A small fish was catch (by me), but I let it go. It was only a baby.
     14	We can catch any more fish, but it was a lot of fun.
     ----------------------------------------------  
-
+    '''
 
                 
     if st.session_state.selected_option == '옵션 1: Explicit [Metalinguistic] A선생님':
