@@ -6,6 +6,22 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+# 모바일화면 좌우여백 조정
+st.markdown(
+    """
+    <style>
+    .css-18e3th9 {
+        padding: 1rem 1rem 1rem 1rem; /* 전체 페이지의 여백 조절 */
+    }
+    .css-1d391kg {
+        padding: 0 1rem; /* 본문 여백을 줄임 */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# TITLE 제목
 st.title("AI활용 영어쓰기 피드백 연구")
 
 
