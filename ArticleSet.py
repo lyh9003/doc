@@ -266,8 +266,10 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
             
         # 저장된 대화와 현재 대화를 모두 포함
         all_messages = st.session_state['saved_conversation'] + st.session_state.messages
-        email_body += '\n'.join([f"{msg['role']}: {msg['content']}" for msg in all_messages])
-    
+        filtered_messages = [msg for msg in all_messages if msg['role'] != 'system']
+        
+        email_body += '\n'.join([f"{msg['role']}: {msg['content']}" for msg in filtered_messages])
+
         send_email('대화내용', email_body)
 
 else:
