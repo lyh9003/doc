@@ -6,8 +6,9 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-st.title("한국외대 교육대학원 \n 영어교육과 연구참여 대화봇")
-st.write("감사합니다")
+st.title("AI활용 영어쓰기 피드백 연구")
+st.write("안녕하세요?\n한국외대 교육대학원 영어교육전공 김인선 입니다.\n
+연구에 참여해 주셔서 감사합니다.\n참여자 정보 확인을 위해 아래 이름과 핸드폰 번호를 기재해 주세요.\n연구 종료 후 일괄 파기될 예정입니다.")
 
 # 사용자 정보 입력 양식
 if 'user_info_submitted' not in st.session_state:
@@ -181,11 +182,11 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
             text = msg.as_string()
             server.sendmail(st.secrets["EMAIL_ADDRESS"], to_email, text)
             server.quit()
-            st.success('이메일이 성공적으로 발송되었습니다!')
+            st.success('대화가 성공적으로 종료되었습니다. 감사합니다!')
         except Exception as e:
-            st.error(f'이메일 발송 중 오류가 발생했습니다: {e}')
+            st.error(f'대화 중 오류가 발생했습니다: {e}')
 
-    if st.button('대화내용 이메일로 보내기'):
+    if st.button('대화 종료하기'):
         email_body = f"사용자 이름: {st.session_state['user_name']}\n"
         email_body += f"사용자 핸드폰 번호: {st.session_state['user_number']}\n\n"
         email_body += "대화 내용:\n"
