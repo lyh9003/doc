@@ -7,17 +7,19 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 st.title("AI활용 영어쓰기 피드백 연구")
-st.write("""안녕하세요?\n
-한국외대 교육대학원 영어교육전공 김인선 입니다.\n
-연구에 참여해 주셔서 감사합니다.\n
-참여자 정보 확인을 위해 아래 이름과 핸드폰 번호를 기재해 주세요.\n
-연구 종료 후 일괄 파기될 예정입니다.""")
+
 
 # 사용자 정보 입력 양식
 if 'user_info_submitted' not in st.session_state:
     st.session_state['user_info_submitted'] = False
 
 if not st.session_state['user_info_submitted']:
+    st.write("""안녕하세요?\n
+    한국외대 교육대학원 영어교육전공 김인선 입니다.\n
+    연구에 참여해 주셔서 감사합니다.\n
+    참여자 정보 확인을 위해 아래 이름과 핸드폰 번호를 기재해 주세요.\n
+    연구 종료 후 일괄 파기될 예정입니다.""")
+    
     with st.form(key='user_info_form'):
         user_name = st.text_input('이름')
         user_number = st.text_input('핸드폰번호 (-)을 포함하여')
