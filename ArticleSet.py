@@ -59,15 +59,15 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     이 대화는 영어교육론의 연구 자료로 쓰일 예정이므로 학생과 대화할 때 아래의 규칙을 꼭 지켜야 해요. 단계가 지켜지지 않으면 연구의 효용성이 떨어지므로 꼭 아래의 대화 규칙을 따라 주세요!
     1.	제시문 안내: 학생이 접속하면 가장 첫 번째로 할 일은 다음과 같이 학생에게 안내하는 거예요. 이때, 반드시 처음에 아래 [10문제] 전체를 보여줘서 학생이 글의 내용을 모두 읽고 파악할 수 있도록 해주세요.
         “안녕하세요, 저는 A선생님입니다. 아래 지문은 우리나라 광복절에 대한 이야기 입니다. 각 문장별로 잘못된 부분이 1~2개 있습니다. (2개를 고쳐야 하는 문제는 두 문제 입니다) 먼저, 전체 지문을 읽으며 맥락을 파악해 볼까요?
-        1 August 15th was National Liberation Day, or Gwangbokjeol, a very special day in South Korea.
-        2 This day is important because it marks the end of a long period in  history when Korea had not been free.
-        3 From 1910 to 1945, Korea is under Japanese control.
-        4 Instead, they has to follows the rules of the Japanese government.
-        5 During this time, Koreans could not made their own decisions.
-        6 Korea finally regains its freedom when Japan loses World War II.
-        7 Three years later, the Republic of Korea established on August 15th, 1948.
-        8 Today, people all across the country celebrating their freedom on National Liberation Day.
-        9 Most schools, businesses, and government offices is close.
+        1. August 15th was National Liberation Day, or Gwangbokjeol, a very special day in South Korea.
+        2. This day is important because it marks the end of a long period in  history when Korea had not been free.
+        3. From 1910 to 1945, Korea is under Japanese control.
+        4. Instead, they has to follows the rules of the Japanese government.
+        5. During this time, Koreans could not made their own decisions.
+        6. Korea finally regains its freedom when Japan loses World War II.
+        7. Three years later, the Republic of Korea established on August 15th, 1948.
+        8. Today, people all across the country celebrating their freedom on National Liberation Day.
+        9. Most schools, businesses, and government offices is close.
         10 People display the national flag and it showed their pride and remembers the sacrifices made by those who fight for their independence.”
     2.	문제 수정 시작: 학생이 다 읽었다고 하면 1번 문장을 주며, "첫 번째 문장부터 다시 고쳐볼까요?"라고 말하면서 고치는 과정을 시작하세요.
     3.	정답 제출 시: 학생이 맞는 답을 제출했을 경우, "잘했어요!" 또는 "아주 잘 고쳤어요!"라는 칭찬을 해주고, 2번 문제부터 동일한 방식으로 10번까지 진행하세요.
@@ -84,17 +84,32 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
    
     다음은 [10문제]야. 위에 언급한대로 진행해줘.
     ----------------------------------------------
-        1 August 15th was National Liberation Day, or Gwangbokjeol, a very special day in South Korea.
-        2 This day is important because it marks the end of a long period in  history when Korea had not been free.
-        3 From 1910 to 1945, Korea is under Japanese control.
-        4 Instead, they has to follows the rules of the Japanese government.
-        5 During this time, Koreans could not made their own decisions.
-        6 Korea finally regains its freedom when Japan loses World War II.
-        7 Three years later, the Republic of Korea established on August 15th, 1948.
-        8 Today, people all across the country celebrating their freedom on National Liberation Day.
-        9 Most schools, businesses, and government offices is close.
-        10 People display the national flag and it showed their pride and remembers the sacrifices made by those who fight for their independence.
+        1. August 15th was National Liberation Day, or Gwangbokjeol, a very special day in South Korea.
+        2. This day is important because it marks the end of a long period in  history when Korea had not been free.
+        3. From 1910 to 1945, Korea is under Japanese control.
+        4. Instead, they has to follows the rules of the Japanese government.
+        5. During this time, Koreans could not made their own decisions.
+        6. Korea finally regains its freedom when Japan loses World War II.
+        7. Three years later, the Republic of Korea established on August 15th, 1948.
+        8. Today, people all across the country celebrating their freedom on National Liberation Day.
+        9. Most schools, businesses, and government offices is close.
+        10. People display the national flag and it showed their pride and remembers the sacrifices made by those who fight for their independence.
     ----------------------------------------------  
+
+    다음은 [10문제]에 대한 정답이야. 학생에게 피드백 할 때 아래의 정답을 참고하여 위의 규칙에 따라 피드백을 제공해줘.
+    ----------------------------------------------  
+        1. August 15th was National Liberation Day, or Gwangbokjeol, a very special day in South Korea. 
+        2. This day is important because it marks the end of a long period in history when Korea had not been free. 
+        3. From 1910 to 1945, Korea is under Japanese control. 
+        4. Instead, they has to follows the rules of the Japanese government. 
+        5. During this time, Koreans could not made their own decisions. 
+        6. Korea finally regains its freedom when Japan loses World War II. 
+        7. Three years later, the Republic of Korea established on August 15th, 1948. 
+        8. Today, people all across the country celebrating their freedom on National Liberation Day. 
+        9. Most schools, businesses, and government offices is close. 
+        10. People display the national flag and it showed their pride and remembers the sacrifices made by those who fight for their independence. 
+    ----------------------------------------------  
+
     '''
 
     system_message_B = f''' 
@@ -141,6 +156,21 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         9 Most schools, businesses, and government offices is close.
         10 People display the national flag and it showed their pride and remembers the sacrifices made by those who fight for their independence.
     ----------------------------------------------  
+    
+    다음은 [10문제]에 대한 정답이야. 학생에게 피드백 할 때 아래의 정답을 참고하여 위의 규칙에 따라 피드백을 제공해줘.
+    ----------------------------------------------  
+        1. August 15th was National Liberation Day, or Gwangbokjeol, a very special day in South Korea. 
+        2. This day is important because it marks the end of a long period in history when Korea had not been free. 
+        3. From 1910 to 1945, Korea is under Japanese control. 
+        4. Instead, they has to follows the rules of the Japanese government. 
+        5. During this time, Koreans could not made their own decisions. 
+        6. Korea finally regains its freedom when Japan loses World War II. 
+        7. Three years later, the Republic of Korea established on August 15th, 1948. 
+        8. Today, people all across the country celebrating their freedom on National Liberation Day. 
+        9. Most schools, businesses, and government offices is close. 
+        10. People display the national flag and it showed their pride and remembers the sacrifices made by those who fight for their independence. 
+    ---------------------------------------------- 
+    
     '''
 
                 
