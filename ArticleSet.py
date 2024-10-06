@@ -103,8 +103,8 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     문제: Today, people all across the country celebrating their freedom on National Liberation Day.
     9. 정답: Most schools, businesses, and government offices are closed.
     문제: Most schools, businesses, and government offices are close.
-    10. 정답: People display the national flag and it shows their pride and remember the sacrifices made by those who fought for their independence.
-    문제: People display the national flag and it shows their pride and remembers the sacrifices made by those who fight for their independence. 
+    10. 정답: People display the national flag and remember the sacrifices made by those who fought for their independence.
+    문제: People display the national flag and remember the sacrifices made by those who fight for their independence. 
 
     학생을 [올바름]으로 유도하는 과정에서 당신의 피드백은 영어교육론에서 말하는 ‘explicit corrective feedback 중 metalinguistic’의 방법으로만 진행해야 합니다.
     
@@ -123,7 +123,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     7.	Three years later, the Republic of Korea established on August 15th, 1948.
     8.	Today, people all across the country celebrating their freedom on National Liberation Day.
     9.	Most schools, businesses, and government offices are close.
-    10.	People display the national flag and it shows their pride and remembers the sacrifices made by those who fight for their independence."
+    10.	People display the national flag and remember the sacrifices made by those who fight for their independence."
     
     2.	문제 수정 시작: 학생이 다 읽었다고 하면 첫 번째 문제부터 고쳐보도록 합니다. 이때 각 문제도 질문과 함께 제공해 줍니다. 이때 [정답]은 노출하지 마세요. 예를들면 아래와 같습니다.:
     "첫 번째 문제부터 고쳐볼까요? 
@@ -169,8 +169,8 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     문제: Today, people all across the country celebrating their freedom on National Liberation Day.
     9. 정답: Most schools, businesses, and government offices are closed.
     문제: Most schools, businesses, and government offices are close.
-    10. 정답: People display the national flag and it shows their pride and remember the sacrifices made by those who fought for their independence.
-    문제: People display the national flag and it shows their pride and remembers the sacrifices made by those who fight for their independence. 
+    10. 정답: People display the national flag and remember the sacrifices made by those who fought for their independence.
+    문제: People display the national flag and remember the sacrifices made by those who fight for their independence. 
 
     학생은 [올바름]을 말해야만 합니다. 당신의 피드백은 영어교육론에서 말하는 ‘implicit corrective feedback 중 recasts’의 방법으로만 진행해야 합니다.
     
@@ -189,7 +189,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     7.	Three years later, the Republic of Korea established on August 15th, 1948.
     8.	Today, people all across the country celebrating their freedom on National Liberation Day.
     9.	Most schools, businesses, and government offices are close.
-    10.	People display the national flag and it shows their pride and remembers the sacrifices made by those who fight for their independence."
+    10.	People display the national flag and remember the sacrifices made by those who fight for their independence."
     
     2.	문제 수정 시작: 첫 번째 문제부터 고쳐보도록 합니다. 이때 각 문제도 질문과 함께 제공해 줍니다. 이때 [정답]은 노출하지 마세요. 예를들면 아래와 같습니다.:
     "첫 번째 문제부터 고쳐볼까요? 
