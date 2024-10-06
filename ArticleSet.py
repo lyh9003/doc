@@ -49,7 +49,8 @@ def send_start_notification(user_name, user_number):
     
     msg = MIMEMultipart()
     msg['From'] = st.secrets["EMAIL_ADDRESS"]
-    msg['To'] = "hufsgseisk@naver.com"
+    to_email = "hufsgseisk@naver.com"  # to_email 변수를 명확히 정의
+    msg['To'] = to_email
     msg['Subject'] = subject
     
     msg.attach(MIMEText(body, 'plain'))
