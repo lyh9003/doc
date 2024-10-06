@@ -5,6 +5,7 @@ import streamlit as st
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from datetime import datetime
 
 # 모바일화면 좌우여백 조정
 st.set_page_config(layout="wide")
