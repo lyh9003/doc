@@ -37,7 +37,7 @@ if not st.session_state['user_info_submitted']:
         st.session_state['user_info_submitted'] = True
         st.session_state['start_time'] = datetime.now()  # 시작 시간을 저장
 
-        send_start_notification(user_name, user_number)  # '코드 시작' 이메일 발송 함수 호출
+        send_start_notification(st.session_state['user_name'], st.session_state['user_number'])  # '코드 시작' 이메일 발송 함수 호출
         
 
     
