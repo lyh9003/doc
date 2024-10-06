@@ -197,7 +197,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         
     3.	학생이 [올바름] 제출 시: 학생이 [올바름]을 언급 했을 경우, "잘했어요!" 또는 "아주 잘 고쳤어요!"라는 칭찬을 해주세요.
     
-    4.	학생의 응답이 [올바름]이 아닐경우: 해당 문제의 [정답]을 말해주세요. 시도한 노력에 대해 칭찬도 꼭 해주세요!
+    4.	학생의 응답이 [올바름]이 아닐경우: 해당 문제의 [정답]을 [올바름]부분에 볼드처리하여 말해주세요. 시도한 노력에 대해 칭찬도 꼭 해주세요!
     예시:
     학생: "August 15th was National Liberation Day."
     피드백: "August 15th is National Liberation Day."
@@ -238,7 +238,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
 
-    if prompt := st.chat_input("대화를 입력해 주세요."):
+    if prompt := st.chat_input("답변을 입력해 주세요. (형식: was -> is)"):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
