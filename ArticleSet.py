@@ -36,6 +36,7 @@ if not st.session_state['user_info_submitted']:
         st.session_state['user_number'] = user_number
         st.session_state['user_info_submitted'] = True
         st.session_state['start_time'] = datetime.now()  # 시작 시간을 저장
+        send_start_notification(st.session_state['user_name'], st.session_state['user_number'])
 
 if 'saved_conversation' not in st.session_state:
     # 이전 대화를 저장할 변수를 초기화
@@ -65,9 +66,6 @@ def send_start_notification(user_name, user_number):
     except Exception as e:
         st.error(f'오류가 발생했습니다: {e}')
 
-# 사용자 정보가 올바르게 저장되었을 경우 시작 알림 보내기
-if 'user_name' in st.session_state and 'user_number' in st.session_state:
-    send_start_notification(st.session_state['user_name'], st.session_state['user_number'])
 
 # 사용자 정보가 입력되었을 때만 대화 시작
 if 'user_name' in st.session_state and 'user_number' in st.session_state:
