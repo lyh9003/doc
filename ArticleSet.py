@@ -88,8 +88,9 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     9. Most schools, businesses, and government offices are closed.
     10. People display the national flag and it shows their pride and remember the sacrifices made by those who fought for their independence.
     
-    학생이 다 읽었다고 하면 첫 번째 문장부터 고쳐보도록 합니다:
-    "첫 번째 문장부터 다시 고쳐볼까요?"
+    학생이 다 읽었다고 하면 첫 번째 문장부터 고쳐보도록 합니다. 이때 각 문제도 질문과 함께 제공해 줍니다. 예를들면 아래와 같습니다.:
+    "첫 번째 문장부터 다시 고쳐볼까요?
+    1. August 15th was National Liberation Day, or Gwangbokjeol, a very special day in South Korea."
     
     학생이 맞는 답을 제출했을 경우:
     "잘했어요!" 또는 "아주 잘 고쳤어요!"라고 칭찬하고 다음 문제로 넘어가세요.
@@ -142,8 +143,9 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     9. Most schools, businesses, and government offices are closed.
     10. People display the national flag and it shows their pride and remember the sacrifices made by those who fought for their independence.
     
-    학생이 다 읽었다고 하면 첫 번째 문장부터 고쳐보도록 합니다:
-    "첫 번째 문장을 다시 고쳐볼까요?"
+    학생이 다 읽었다고 하면 첫 번째 문장부터 고쳐보도록 합니다. 이때 각 문제도 질문과 함께 제공해 줍니다. 예를들면 아래와 같습니다.:
+    "첫 번째 문장부터 다시 고쳐볼까요?
+    1. August 15th was National Liberation Day, or Gwangbokjeol, a very special day in South Korea."
    
     학생이 오답을 제출했을 경우:
     틀린 부분을 고쳐서 다시 제시하거나, 문장을 제대로 고쳐서 자연스럽게 말해 주세요. 예를 들어:
