@@ -13,6 +13,29 @@ st.set_page_config(layout="wide")
 # TITLE 제목
 st.header("AI활용 영어쓰기 피드백 연구")
 
+def send_start_notification(user_name, user_number):
+    subject = f"코드 시작 : {user_name}"
+    body = f"사용자 이름: {user_name}\n"
+    body += f"핸드폰 번호: {user_number}\n"
+    body += "코드가 실행되었습니다."
+    
+    msg = MIMEMultipart()
+    msg['From'] = st.secrets["EMAIL_ADDRESS"]
+    to_email = "hufsgseisk@naver.com"  # to_email 변수를 명확히 정의
+    msg['To'] = to_email
+    msg['Subject'] = subject
+    
+    msg.attach(MIMEText(body, 'plain'))
+    
+    try:
+        server = smtplib.SMTP("smtp.naver.com", 587)
+        server.starttls()
+        server.login(st.secrets["EMAIL_ADDRESS"], st.secrets["EMAIL_PASSWORD"])
+        text = msg.as_string()
+        server.sendmail(st.secrets["EMAIL_ADDRESS"], to_email, text)
+        server.quit()
+    except Exception as e:
+        st.error(f'오류가 발생했습니다: {e}')
 
 # 사용자 정보 입력 양식
 if 'user_info_submitted' not in st.session_state:
@@ -42,29 +65,6 @@ if 'saved_conversation' not in st.session_state:
     # 이전 대화를 저장할 변수를 초기화
     st.session_state['saved_conversation'] = []
 
-def send_start_notification(user_name, user_number):
-    subject = f"코드 시작 : {user_name}"
-    body = f"사용자 이름: {user_name}\n"
-    body += f"핸드폰 번호: {user_number}\n"
-    body += "코드가 실행되었습니다."
-    
-    msg = MIMEMultipart()
-    msg['From'] = st.secrets["EMAIL_ADDRESS"]
-    to_email = "hufsgseisk@naver.com"  # to_email 변수를 명확히 정의
-    msg['To'] = to_email
-    msg['Subject'] = subject
-    
-    msg.attach(MIMEText(body, 'plain'))
-    
-    try:
-        server = smtplib.SMTP("smtp.naver.com", 587)
-        server.starttls()
-        server.login(st.secrets["EMAIL_ADDRESS"], st.secrets["EMAIL_PASSWORD"])
-        text = msg.as_string()
-        server.sendmail(st.secrets["EMAIL_ADDRESS"], to_email, text)
-        server.quit()
-    except Exception as e:
-        st.error(f'오류가 발생했습니다: {e}')
 
 
 # 사용자 정보가 입력되었을 때만 대화 시작
