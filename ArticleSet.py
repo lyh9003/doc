@@ -264,6 +264,8 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
             text = msg.as_string()
             server.sendmail(st.secrets["EMAIL_ADDRESS"], "hufsgseisk@naver.com", text)
             server.quit()
+        except Exception as e:
+            st.error(f'오류가 발생했습니다: {e}')
 
 
 
