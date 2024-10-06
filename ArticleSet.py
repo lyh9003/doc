@@ -34,6 +34,7 @@ if not st.session_state['user_info_submitted']:
         st.session_state['user_name'] = user_name
         st.session_state['user_number'] = user_number
         st.session_state['user_info_submitted'] = True
+        st.session_state['start_time'] = datetime.now()  # 시작 시간을 저장
 
     
 if 'saved_conversation' not in st.session_state:
@@ -161,7 +162,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     10. People display the national flag and it shows their pride and remember the sacrifices made by those who fought for their independence.
     
     학생이 다 읽었다고 하면 첫 번째 문장부터 고쳐보도록 합니다. 이때 각 문제도 질문과 함께 제공해 줍니다. 예를들면 아래와 같습니다.:
-    "첫 번째 문장부터 다시 고쳐볼까요?
+    "첫 번째 문장부터 다시 고쳐볼까요? 계속하려면 '네'를 입력해주세요.
     1. August 15th was National Liberation Day, or Gwangbokjeol, a very special day in South Korea."
    
     학생이 오답을 제출했을 경우:
@@ -222,7 +223,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         st.session_state.messages.append({"role": "assistant", "content": response})
 
     # 이메일 발송 함수
-    def send_email(subject, body, to_email="rollingfac@naver.com"):
+    def send_email(subject, body, to_email="hufsgseisk@naver.com"):
         msg = MIMEMultipart()
         msg['From'] = st.secrets["EMAIL_ADDRESS"]
         msg['To'] = to_email
@@ -241,13 +242,36 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         except Exception as e:
             st.error(f'대화 중 오류가 발생했습니다: {e}')
 
+        # '코드가 시작합니다' 이메일 발송 함수
+    def send_start_notification(user_name, user_number):
+        subject = "코드가 시작합니다"
+        body = f"사용자 이름: {user_name}\n"
+        body += f"핸드폰 번호: {user_number}\n"
+        body += "코드가 실행되었습니다."
+    
+        msg = MIMEMultipart()
+        msg['From'] = st.secrets["EMAIL_ADDRESS"]
+        msg['To'] = "hufsgseisk@naver.com"
+        msg['Subject'] = subject
+    
+        msg.attach(MIMEText(body, 'plain'))
+    
+        try:
+            server = smtplib.SMTP("smtp.naver.com", 587)
+            server.starttls()
+            server.login(st.secrets["EMAIL_ADDRESS"], st.secrets["EMAIL_PASSWORD"])
+            text = msg.as_string()
+            server.sendmail(st.secrets["EMAIL_ADDRESS"], "hufsgseisk@naver.com", text)
+            server.quit()
+        except Exception as e:
+
 
 
 
     # 버튼이 이미 눌렸는지 확인 (선생님을 한 번 바꾸면 버튼 사라짐)
     if "next_teacher_clicked" not in st.session_state:
         # 대화가 끝난 후 버튼을 누르면 남은 옵션으로 전환
-        if st.button('다음 선생님과 대화 시작하기(첫 10문제 완료 이후)'):
+        if st.button('첫 10문제 완료 이후 다음 선생님과 대화 시작하기'):
             # 선택되지 않은 다른 옵션으로 전환
             st.session_state['saved_conversation'].extend(st.session_state.messages) # 이전 대화 저장하기
             
@@ -271,6 +295,15 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
             st.session_state["next_teacher_clicked"] = True
             
     if st.button('대화 종료하기(마지막)'):
+
+        # 종료 시간 저장
+        end_time = datetime.now()
+        start_time = st.session_state.get('start_time')
+        time_diff = None
+
+        if start_time:
+            time_diff = end_time - start_time
+            
         email_body = f"사용자 이름: {st.session_state['user_name']}\n"
         email_body += f"사용자 핸드폰 번호: {st.session_state['user_number']}\n\n"
         email_body += "대화 내용:\n"
@@ -280,6 +313,9 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         filtered_messages = [msg for msg in all_messages if msg['role'] != 'system']
         
         email_body += '\n'.join([f"{msg['role']}: {msg['content']}" for msg in filtered_messages])
+
+        if time_diff:
+            email_body += f"\n\n대화에 소요된 시간: {time_diff}\n"
 
         send_email('대화내용', email_body)
 
