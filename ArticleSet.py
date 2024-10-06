@@ -61,7 +61,7 @@ def send_start_notification(user_name, user_number):
         text = msg.as_string()
         server.sendmail(st.secrets["EMAIL_ADDRESS"], to_email, text)
         server.quit()
-     except Exception as e:
+    except Exception as e:
         st.error(f'오류가 발생했습니다: {e}')
 
 # 사용자 정보가 올바르게 저장되었을 경우 시작 알림 보내기
