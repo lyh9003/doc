@@ -163,7 +163,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
         st.session_state.messages.append({"role": "assistant", "content": response})
 
     # 이메일 발송 함수
-    def send_email(subject, body, to_email="rollingfac@naver.com"):
+    def send_email(subject, body, to_email="hufsgseisk@naver.com"):
         msg = MIMEMultipart()
         msg['From'] = st.secrets["EMAIL_ADDRESS"]
         msg['To'] = to_email
