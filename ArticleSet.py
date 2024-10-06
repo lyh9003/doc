@@ -210,7 +210,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
                     for m in st.session_state.messages
                 ],
                 stream=True,
-                temperature=1.5  # 여기에서 temperature 값을 설정합니다.
+                temperature=1.0  # 여기에서 temperature 값을 설정합니다.
             )
             response = st.write_stream(stream)
         st.session_state.messages.append({"role": "assistant", "content": response})
