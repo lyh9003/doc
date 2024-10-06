@@ -98,8 +98,8 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     10.	People display the national flag and it showed their pride and remembers the sacrifices made by those who fight for their independence."
     
     2.	문제 수정 시작: 학생이 다 읽었다고 하면 첫 번째 문제부터 고쳐보도록 합니다. 이때 각 문제도 질문과 함께 제공해 줍니다. 예를들면 아래와 같습니다.:
-        "첫 번째 문제부터 고쳐볼까요?
-        1. August 15th was National Liberation Day, or Gwangbokjeol, a very special day in South Korea."
+    "첫 번째 문제부터 고쳐볼까요?
+    1. August 15th was National Liberation Day, or Gwangbokjeol, a very special day in South Korea."
         
     3.	학생이 올바름 제출 시: 학생이 [올바름]을 언급 했을 경우, "잘했어요!" 또는 "아주 잘 고쳤어요!"라는 칭찬을 해주고, 2번 문제부터 동일한 방식으로 10번까지 진행하세요.
     [올바름] 외 다른 부분을 말하면 ‘틀렸다’고 말하고 다시 시도하도록 하세요.
@@ -216,7 +216,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
                     for m in st.session_state.messages
                 ],
                 stream=True,
-                temperature=0.7  # 여기에서 temperature 값을 설정합니다.
+                #temperature=0.7   여기에서 temperature 값을 설정합니다.
             )
             response = st.write_stream(stream)
         st.session_state.messages.append({"role": "assistant", "content": response})
