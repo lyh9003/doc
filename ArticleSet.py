@@ -36,6 +36,8 @@ if not st.session_state['user_info_submitted']:
         st.session_state['user_number'] = user_number
         st.session_state['user_info_submitted'] = True
         st.session_state['start_time'] = datetime.now()  # 시작 시간을 저장
+
+        send_start_notification(user_name, user_number)  # '코드 시작' 이메일 발송 함수 호출
         
 
     
@@ -45,8 +47,6 @@ if 'saved_conversation' not in st.session_state:
 
 # 사용자 정보가 입력되었을 때만 대화 시작
 if 'user_name' in st.session_state and 'user_number' in st.session_state:
-    
-    send_start_notification(user_name, user_number)  # '코드 시작' 이메일 발송 함수 호출
     
     st.write(f"""안녕하세요^^ {st.session_state['user_name']} 님! 우선 가볍게 인사로 대화를 시작해주시고, 처음에 지문이 나오지 않을 시 전체 지문을 달라고 해주시면 됩니다.<br> 
     문장을 다 적지 않고 답만 말하셔도 되며, 도저히 답을 모르겠을 경우 모른다고 말씀해주세요.<br>
