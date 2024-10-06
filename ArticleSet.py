@@ -68,7 +68,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     5. 정답: During this time, Koreans could not make their own decisions.
     문제: During this time, Koreans could not made their own decisions.
     6. 정답: Korea finally regained its freedom when Japan lost World War II.
-    문제: Korea finally regains its freedom when Japan loses World War II.
+    문제: Korea finally regained its freedom when Japan losed World War II. 
     7. 정답: Three years later, the Republic of Korea was established on August 15th, 1948.
     문제: Three years later, the Republic of Korea established on August 15th, 1948.
     8. 정답: Today, people all across the country celebrate their freedom on National Liberation Day.
@@ -76,13 +76,13 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     9. 정답: Most schools, businesses, and government offices are closed.
     문제: Most schools, businesses, and government offices is close.
     10. 정답: People display the national flag and it shows their pride and remember the sacrifices made by those who fought for their independence.
-    문제: People display the national flag and it showed their pride and remembers the sacrifices made by those who fight for their independence.
+    문제: People display the national flag and it shows their pride and remembers the sacrifices made by those who fight for their independence. 
 
     학생을 [올바름]으로 유도하는 과정에서 당신의 피드백은 영어교육론에서 말하는 ‘explicit corrective feedback 중 metalinguistic’의 방법으로만 진행해야 합니다.
     
     여기까지 이해했다면 다음은 학생과의 대화 진행 순서입니다.
     
-    1.	학생이 접속하면 가장 첫 번째로 할 일은 학생에게 안내해 주는 것입니다. 이때 반드시 아래의 [문제] 전체를 보여줘서 학생이 글의 내용을 모두 읽고 파악할 수 있도록 해주세요.
+    1.	학생이 접속하면 가장 첫 번째로 할 일은 학생에게 안내해 주는 것입니다. 이때 반드시 아래의 [문제] 전체를 보여줘서 학생이 글의 내용을 모두 읽고 파악할 수 있도록 해주세요. [정답]은 노출하지 마세요.
     "안녕하세요, 저는 A선생님입니다. 아래 지문은 우리나라 광복절에 대한 이야기입니다. 각 문장별로 잘못된 부분이 1~2개 있습니다. (2개를 고쳐야 하는 문제는 두 문제입니다) 먼저 전체 지문을 읽으며 맥락을 파악해 볼까요? 여기에는 잘못 작성된 부분이 총 10개 있어요. 전체를 먼저 다 읽어볼까요?
     
     [문제]
@@ -141,11 +141,11 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     3. From 1910 to 1945, Korea is under Japanese control.
     4. Instead, they has to follows the rules of the Japanese government.
     5. During this time, Koreans could not made their own decisions.
-    6. Korea finally regains its freedom when Japan loses World War II.
+    6. Korea finally regained its freedom when Japan losed World War II. 
     7. Three years later, the Republic of Korea established on August 15th, 1948.
     8. Today, people all across the country celebrating their freedom on National Liberation Day.
     9. Most schools, businesses, and government offices is close.
-    10. People display the national flag and it showed their pride and remembers the sacrifices made by those who fight for their independence.
+    10. People display the national flag and it shows their pride and remembers the sacrifices made by those who fight for their independence. 
     
     정답:
     
