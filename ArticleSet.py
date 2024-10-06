@@ -94,7 +94,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     3. 정답: From 1910 to 1945, Korea was under Japanese control.
     문제: From 1910 to 1945, Korea is under Japanese control.
     4. 정답: Instead, they had to follow the rules of the Japanese government.
-    문제: Instead, they has to follows the rules of the Japanese government.
+    문제: Instead, they had to follows the rules of the Japanese government.
     5. 정답: During this time, Koreans could not make their own decisions.
     문제: During this time, Koreans could not made their own decisions.
     6. 정답: Korea finally regained its freedom when Japan lost World War II.
@@ -119,9 +119,9 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     1.	August 15th was National Liberation Day, or Gwangbokjeol, a very special day in South Korea.
     2.	This day is important because it marks the end of a long period in history when Korea had not been free.
     3.	From 1910 to 1945, Korea is under Japanese control.
-    4.	Instead, they has to follows the rules of the Japanese government.
+    4.	Instead, they had to follows the rules of the Japanese government.
     5.	During this time, Koreans could not made their own decisions.
-    6.	Korea finally regains its freedom when Japan loses World War II.
+    6.	Korea finally regained its freedom when Japan loses World War II.
     7.	Three years later, the Republic of Korea established on August 15th, 1948.
     8.	Today, people all across the country celebrating their freedom on National Liberation Day.
     9.	Most schools, businesses, and government offices is close.
@@ -169,7 +169,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     1. August 15th was National Liberation Day, or Gwangbokjeol, a very special day in South Korea.
     2. This day is important because it marks the end of a long period in history when Korea had not been free.
     3. From 1910 to 1945, Korea is under Japanese control.
-    4. Instead, they has to follows the rules of the Japanese government.
+    4. Instead, they had to follows the rules of the Japanese government.
     5. During this time, Koreans could not made their own decisions.
     6. Korea finally regained its freedom when Japan losed World War II. 
     7. Three years later, the Republic of Korea established on August 15th, 1948.
