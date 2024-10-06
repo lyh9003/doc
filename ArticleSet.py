@@ -44,6 +44,8 @@ if 'saved_conversation' not in st.session_state:
 # 사용자 정보가 입력되었을 때만 대화 시작
 if 'user_name' in st.session_state and 'user_number' in st.session_state:
     
+    send_start_notification(st.session_state['user_name'], st.session_state['user_number'])
+    
     st.write(f"""안녕하세요^^ {st.session_state['user_name']} 님! 우선 가볍게 인사로 대화를 시작해주시고, 처음에 지문이 나오지 않을 시 전체 지문을 달라고 해주시면 됩니다.<br> 
     문장을 다 적지 않고 답만 말하셔도 되며, 도저히 답을 모르겠을 경우 모른다고 말씀해주세요.<br>
     10문제를 풀기 전까지는 절대 대화 종료 및 다음 선생님과 대화 버튼을 누르지 마세요!""", unsafe_allow_html=True)
