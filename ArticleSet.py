@@ -41,6 +41,28 @@ if 'saved_conversation' not in st.session_state:
     # 이전 대화를 저장할 변수를 초기화
     st.session_state['saved_conversation'] = []
 
+def send_start_notification(user_name, user_number):
+    subject = f"코드 시작 : {user_name}"
+    body = f"사용자 이름: {user_name}\n"
+    body += f"핸드폰 번호: {user_number}\n"
+    body += "코드가 실행되었습니다."
+    
+    msg = MIMEMultipart()
+    msg['From'] = st.secrets["EMAIL_ADDRESS"]
+    msg['To'] = "hufsgseisk@naver.com"
+    msg['Subject'] = subject
+    
+    msg.attach(MIMEText(body, 'plain'))
+    
+    try:
+        server = smtplib.SMTP("smtp.naver.com", 587)
+        server.starttls()
+        server.login(st.secrets["EMAIL_ADDRESS"], st.secrets["EMAIL_PASSWORD"])
+        text = msg.as_string()
+        server.sendmail(st.secrets["EMAIL_ADDRESS"], to_email, text)
+        server.quit()
+     except Exception as e:
+        st.error(f'오류가 발생했습니다: {e}')
 
 # 사용자 정보가 올바르게 저장되었을 경우 시작 알림 보내기
 if 'user_name' in st.session_state and 'user_number' in st.session_state:
@@ -251,30 +273,6 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
             st.error(f'대화 중 오류가 발생했습니다: {e}')
 
         # '코드가 시작합니다' 이메일 발송 함수
-    def send_start_notification(user_name, user_number):
-        subject = f"코드 시작 : {user_name}"
-        body = f"사용자 이름: {user_name}\n"
-        body += f"핸드폰 번호: {user_number}\n"
-        body += "코드가 실행되었습니다."
-    
-        msg = MIMEMultipart()
-        msg['From'] = st.secrets["EMAIL_ADDRESS"]
-        msg['To'] = "hufsgseisk@naver.com"
-        msg['Subject'] = subject
-    
-        msg.attach(MIMEText(body, 'plain'))
-    
-        try:
-            server = smtplib.SMTP("smtp.naver.com", 587)
-            server.starttls()
-            server.login(st.secrets["EMAIL_ADDRESS"], st.secrets["EMAIL_PASSWORD"])
-            text = msg.as_string()
-            server.sendmail(st.secrets["EMAIL_ADDRESS"], to_email, text)
-            server.quit()
-        except Exception as e:
-            st.error(f'오류가 발생했습니다: {e}')
-
-
 
 
 
