@@ -248,7 +248,6 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
 
         # '코드가 시작합니다' 이메일 발송 함수
     def send_start_notification(user_name, user_number):
-        user_name = st.session_state.get('user_name', 'NULL')
         subject = f"코드 시작 : {user_name}"
         body = f"사용자 이름: {user_name}\n"
         body += f"핸드폰 번호: {user_number}\n"
