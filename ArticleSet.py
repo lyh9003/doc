@@ -41,10 +41,13 @@ if 'saved_conversation' not in st.session_state:
     # 이전 대화를 저장할 변수를 초기화
     st.session_state['saved_conversation'] = []
 
+
+# 사용자 정보가 올바르게 저장되었을 경우 시작 알림 보내기
+if 'user_name' in st.session_state and 'user_number' in st.session_state:
+    send_start_notification(st.session_state['user_name'], st.session_state['user_number'])
+
 # 사용자 정보가 입력되었을 때만 대화 시작
 if 'user_name' in st.session_state and 'user_number' in st.session_state:
-    
-    send_start_notification(st.session_state['user_name'], st.session_state['user_number'])
     
     st.write(f"""안녕하세요^^ {st.session_state['user_name']} 님! 우선 가볍게 인사로 대화를 시작해주시고, 처음에 지문이 나오지 않을 시 전체 지문을 달라고 해주시면 됩니다.<br> 
     문장을 다 적지 않고 답만 말하셔도 되며, 도저히 답을 모르겠을 경우 모른다고 말씀해주세요.<br>
