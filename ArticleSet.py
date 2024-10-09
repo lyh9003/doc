@@ -278,7 +278,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
             server.quit()
             st.success('대화가 성공적으로 종료되었습니다. 창을 닫으시고 처음 받은 링크의 2.설문조사 3.레벨테스트 을 반드시 수행해 주세요')
             st.success('번거로우시겠지만 나머지 진행사항도 수행 부탁드리겠습니다. 감사합니다!')
-            st.markdown("[메인 링크](https://litt.ly/hufs_gse_insun)")
+            st.markdown("[https://litt.ly/hufs_gse_insun 실험 참여 메인 링크 바로가기](https://litt.ly/hufs_gse_insun)")
         except Exception as e:
             st.error(f'대화 중 오류가 발생했습니다: {e}')
 
