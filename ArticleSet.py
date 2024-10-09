@@ -53,7 +53,7 @@ if not st.session_state['user_info_submitted']:
         user_name = st.text_input('이름')
         user_number = st.text_input('핸드폰번호 (-)을 포함하여')
         temp = st.text_input('처음 받은 링크의 가이드를 읽었을까요?')
-        temp2 = st.text_input('선생님 A/B 두명(2 Set) 진행해야하는 부분을 아시나요?')
+        temp2 = st.text_input('선생님 A/B 두명(2 Set) 모두와 진행해야하는 부분을 아시나요? (같은지문의 대화 두번!!!)')
         submit_button = st.form_submit_button(label='정보 제출')
 
     if submit_button:
