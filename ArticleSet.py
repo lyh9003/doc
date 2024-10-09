@@ -52,6 +52,8 @@ if not st.session_state['user_info_submitted']:
     with st.form(key='user_info_form'):
         user_name = st.text_input('이름')
         user_number = st.text_input('핸드폰번호 (-)을 포함하여')
+        temp = st.text_input('처음 받은 링크의 가이드를 읽었을까요?')
+        temp2 = st.text_input('선생님 A/B 두명(2 Set) 진행해야하는 부분을 아시나요?')
         submit_button = st.form_submit_button(label='정보 제출')
 
     if submit_button:
@@ -274,7 +276,9 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
             text = msg.as_string()
             server.sendmail(st.secrets["EMAIL_ADDRESS"], to_email, text)
             server.quit()
-            st.success('대화가 성공적으로 종료되었습니다. 감사합니다! 창을 닫아주세요.')
+            st.success('대화가 성공적으로 종료되었습니다. 창을 닫으시고 처음 받은 링크의 2.설문조사 3.레벨테스트 을 반드시 수행해 주세요')
+            st.success('번거로우시겠지만 나머지 진행사항도 수행 부탁드리겠습니다. 감사합니다!')
+            st.markdown("[메인 링크](https://litt.ly/hufs_gse_insun)")
         except Exception as e:
             st.error(f'대화 중 오류가 발생했습니다: {e}')
 
