@@ -20,8 +20,7 @@ st.markdown("---")                  # 경계선 생성
 
 # 4.뉴스 기사 크롤링 함수
 def naver_news(pages=3):  # pages 인자를 통해 몇 페이지를 크롤링할지 결정
-    news_titles = []  # 뉴스 제목 리스트
-    news_links = []   # 뉴스 링크 리스트
+    news_titles_links = []  # 뉴스 제목과 링크를 저장할 리스트 (튜플 형태로)
 
     # 여러 페이지 크롤링
     for page in range(1, pages+1):  # 원하는 페이지 수만큼 반복
@@ -41,18 +40,17 @@ def naver_news(pages=3):  # pages 인자를 통해 몇 페이지를 크롤링할
         titles = soup.select("#main_content > div.list_body.newsflash_body > ul > li > a")
 
         for title in titles:  # 각 title에 대해 반복
-            news_titles.append(title.text.strip())  # 뉴스 제목을 리스트에 저장
-            news_links.append(title['href'])        # 뉴스 링크를 리스트에 저장
+            news_titles_links.append((title.text.strip(), title['href']))  # 제목과 링크를 튜플로 저장
 
-    # 중복 제거
-    news_titles = list(set(news_titles))  # 중복 뉴스 제목 제거
-    news_links = list(set(news_links))    # 중복 뉴스 링크 제거
+    # part2. 중복 뉴스 제거 (튜플로 저장된 제목과 링크를 함께 중복 제거)
+    news_titles_links = list(dict.fromkeys(news_titles_links))  # 순서가 유지되는 중복 제거
 
-    index = []  # 인덱스 리스트
-    news_with_links = []  # 뉴스 제목과 링크를 합친 리스트
+    # 인덱스 리스트 및 뉴스 리스트 생성
+    index = []
+    news_with_links = []
 
     # 정제된 뉴스와 인덱스 리스트에 저장
-    for i, (title, link) in enumerate(zip(news_titles, news_links)):
+    for i, (title, link) in enumerate(news_titles_links):
         index.append(i + 1)  # 인덱스 저장
         news_with_links.append(f"[{title}]({link})")  # 제목에 링크를 추가한 markdown 형식으로 저장
 
