@@ -61,43 +61,50 @@ def naver_news(pages=3):  # pages 인자를 통해 몇 페이지를 크롤링할
 
     # 인덱스 리스트 및 뉴스 리스트 생성
     index = []
-    news_with_links_and_comments = []
+    titles = []
+    links = []
+    comments = []
 
     # 정제된 뉴스와 인덱스 리스트에 저장
     for i, (title, link, comment) in enumerate(news_titles_links_comments):
         index.append(i + 1)  # 인덱스 저장
-        news_with_links_and_comments.append(f"[{title}]({link}) - 댓글 수: {comment}")  # 제목, 링크, 댓글 수 출력
+        titles.append(f"[{title}]({link})")  # 제목과 링크 저장
+        comments.append(comment)  # 댓글 수 저장
 
     # 데이터 프레임 생성
     df = pd.DataFrame({
         "No.": index,
-        "Articles": news_with_links_and_comments
-    })  # 인덱스와 뉴스 제목 + 링크 + 댓글 수로 데이터프레임 생성
+        "Articles": titles,
+        "Comments": comments  # 댓글 수 추가
+    })
 
     return df  # 데이터프레임 반환
-    
-# 5.Page Layout설계
-col1, col2 = st.columns([2, 8])                     # 페이지 Layout를 2개의 Column으로 분할
+
+
+# 5.Page Layout 설계
+col1, col2, col3 = st.columns([2, 6, 2])  # 페이지 Layout을 3개의 Column으로 분할
 
 # 6.col1 설계                       
 with col1:                                          
-    button1 = st.button(label = "뉴스 크롤링",      # button1 생성 : 레이블("뉴스 크롤링")
-                        use_container_width = True)
-    button2 = st.button(label = "뉴스 보기",        # button2 생성 : 레이블("뉴스 보기")
-                        use_container_width = True)
+    button1 = st.button(label="뉴스 크롤링",  # button1 생성 : 레이블("뉴스 크롤링")
+                        use_container_width=True)
+    button2 = st.button(label="뉴스 보기",  # button2 생성 : 레이블("뉴스 보기")
+                        use_container_width=True)
 
-# 7.col2 설계
+# 7.col2 및 col3 설계
 with col2:
-    # 빈 데이터프레임 미리 선언 (세션 상태를 사용하여 df 유지)
-    if 'df' not in st.session_state:
-        st.session_state.df = pd.DataFrame()  # 세션 상태에 빈 데이터프레임 저장
-
     if button1:  # button1을 누르면
-        st.session_state.df = naver_news()  # 세션 상태에 df 저장 (크롤링 결과)
-
+        df = naver_news()  # naver_news() 함수 실행하여 df를 반환받음
+        
     if button2:  # button2를 누르면
-        if not st.session_state.df.empty:  # df가 비어있지 않은 경우에만 출력
-            for index, row in st.session_state.df.iterrows():  # 각 뉴스 기사에 대해 반복
-                st.markdown(f"{row['No.']}. {row['Articles']}", unsafe_allow_html=True)  # 인덱스와 링크 출력
-        else:
-            st.write("뉴스 크롤링을 먼저 수행해 주세요.")  # df가 비어있을 때 메시지 출력
+        if not df.empty:  # df가 빈 데이터프레임이 아닐 경우에만
+            st.dataframe(data=df[['No.', 'Articles']],  # 데이터 프레임 생성
+                         use_container_width=True,   # 데이터는 df 사용
+                         hide_index=True)  # 폭은 현재 컨테이너 넓이 적용, 인덱스 생략
+
+with col3:
+    if button2:  # button2를 누르면
+        if not df.empty:  # df가 빈 데이터프레임이 아닐 경우에만
+            st.dataframe(data=df[['Comments']],  # 댓글 수만 별도로 표시
+                         use_container_width=True,   # 데이터는 df 사용
+                         hide_index=True)  # 폭은 현재 컨테이너 넓이 적용, 인덱스 생략
