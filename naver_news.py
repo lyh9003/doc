@@ -73,5 +73,3 @@ with col2:
         st.dataframe(data = df,                     # 데이터 프레임 생성
                      use_container_width = True,    # 데이터는 df를 사용
                      hide_index = True)             # 폭은 현재 컨테이너 넓이 적용, 인덱스는 생략
-    
-[출처] [파이썬 응용:순한 맛] Streamlit(7):실시간 네이버 뉴스를 제공하는 대시보드(Web App)|작성자 코딩 연금술사
