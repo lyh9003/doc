@@ -4,6 +4,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 import datetime
+import re
 
 # 2.웹 탭 타이틀 및 아이콘 설정
 st.set_page_config(
@@ -43,15 +44,18 @@ def naver_news(pages=3):  # pages 인자를 통해 몇 페이지를 크롤링할
             news_title = title.text.strip()  # 뉴스 제목
             news_link = title['href']        # 뉴스 링크
 
-            # 뉴스 링크에서 댓글 수 크롤링
-            article_response = requests.get(news_link, headers=headers)  # 뉴스 링크로 접근
-            article_html = article_response.text
-            article_soup = BeautifulSoup(article_html, "html.parser")
+            # 뉴스 링크에서 oid와 aid 추출 (정규 표현식 사용)
+            oid = re.search(r'oid=(\d+)', news_link).group(1)  # 언론사 ID
+            aid = re.search(r'aid=(\d+)', news_link).group(1)  # 기사 ID
 
-            # 댓글 수가 표시된 HTML 요소를 추출 (예시로 .u_cbox_count라는 클래스를 사용)
-            try:
-                comment_count = article_soup.select_one(".u_cbox_count").text  # 댓글 수 추출
-            except AttributeError:
+            # 네이버 뉴스 댓글 API를 통해 댓글 수 가져오기
+            comment_api_url = f"https://apis.naver.com/commentBox/cbox/web_naver_list_jsonp.json?ticket=news&templateId=view_politics&pool=cbox5&lang=ko&country=KR&objectId=news{oid},{aid}"
+            comment_response = requests.get(comment_api_url, headers=headers)
+            comment_data = re.search(r'"commentCount":(\d+)', comment_response.text)  # 댓글 수 추출
+
+            if comment_data:
+                comment_count = comment_data.group(1)  # 댓글 수
+            else:
                 comment_count = "0"  # 댓글이 없으면 0으로 표시
 
             news_titles_links_comments.append((news_title, news_link, comment_count))  # 제목, 링크, 댓글 수 추가
