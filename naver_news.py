@@ -19,12 +19,13 @@ st.subheader("날짜:{}".format(now)) # 웹페이지 서브헤더에 날짜와 �
 st.markdown("---")                  # 경계선 생성
 
 # 4.뉴스 기사 크롤링 함수
-def naver_news(pages=3):  # pages 인자를 통해 몇 페이지를 크롤링할지 결정
+def naver_news_with_comments(pages=3):
     news_titles = []  # 뉴스 제목 리스트
     news_links = []   # 뉴스 링크 리스트
+    news_comments = [] # 뉴스 댓글 수 리스트
 
     # 여러 페이지 크롤링
-    for page in range(1, pages+1):  # 원하는 페이지 수만큼 반복
+    for page in range(1, pages + 1):  # 원하는 페이지 수만큼 반복
         now = datetime.datetime.now()   # 현재 날짜와 시각 객체 now 생성
         date = now.strftime("%Y%m%d")   # 날짜와 시각 형식을 "년/월/일"로 전환
         ## 뉴스 크롤링하려는 사이트 주소를 url에 입력, 페이지 번호 추가
@@ -48,21 +49,33 @@ def naver_news(pages=3):  # pages 인자를 통해 몇 페이지를 크롤링할
     news_titles = list(set(news_titles))  # 중복 뉴스 제목 제거
     news_links = list(set(news_links))    # 중복 뉴스 링크 제거
 
-    index = []  # 인덱스 리스트
-    news_with_links = []  # 뉴스 제목과 링크를 합친 리스트
+    # 각 뉴스 기사 페이지에서 댓글 수 가져오기
+    for link in news_links:
+        article_url = link  # 뉴스 기사의 상세 페이지 URL
+        article_response = requests.get(article_url, headers=headers)  # 기사 상세 페이지 요청
+        article_html = article_response.text
+        article_soup = BeautifulSoup(article_html, "html.parser")
 
-    # 정제된 뉴스와 인덱스 리스트에 저장
-    for i, (title, link) in enumerate(zip(news_titles, news_links)):
-        index.append(i + 1)  # 인덱스 저장
-        news_with_links.append(f"[{title}]({link})")  # 제목에 링크를 추가한 markdown 형식으로 저장
+        # 댓글 수 가져오기 (네이버 뉴스의 댓글 섹션에 따라 CSS 선택자 다를 수 있음)
+        # 일반적으로 'api/replyCount.nhn' API를 호출해야 함.
+        try:
+            comment_count = article_soup.select_one("#comment_count")  # 댓글 수를 가져오는 부분
+            if comment_count:
+                news_comments.append(comment_count.text.strip())  # 댓글 수 저장
+            else:
+                news_comments.append("0")  # 댓글 수가 없으면 0으로 처리
+        except Exception as e:
+            news_comments.append("0")  # 오류가 발생하면 0으로 처리
 
     # 데이터 프레임 생성
     df = pd.DataFrame({
-        "No.": index,
-        "Articles": news_with_links
-    })  # 인덱스와 뉴스 제목 + 링크로 데이터프레임 생성
+        "No.": list(range(1, len(news_titles) + 1)),
+        "Title": news_titles,
+        "Link": news_links,
+        "Comments": news_comments
+    })
 
-    return df  # 데이터프레임 반환
+    return df
 
 # 5.Page Layout설계
 col1, col2 = st.columns([2, 8])                     # 페이지 Layout를 2개의 Column으로 분할
