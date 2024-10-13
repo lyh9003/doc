@@ -213,12 +213,12 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
 
                 
     if st.session_state.selected_option == '옵션 1: Explicit [Metalinguistic] A선생님':
-        st.success('A선생님 입니다. 가볍게 인사로 시작해 주세요.')
+        st.success('A선생님(기억해주세요) 입니다. 가볍게 인사로 시작해 주세요.')
         if "messages" not in st.session_state:
             st.session_state.messages = [{"role": "system", "content": system_message_A}]
 
     else:
-        st.success('B선생님 입니다. 가볍게 인사로 시작해 주세요.')
+        st.success('B선생님(기억해주세요) 입니다. 가볍게 인사로 시작해 주세요.')
         if "messages" not in st.session_state:
             st.session_state.messages = [{"role": "system", "content": system_message_B}]
 
