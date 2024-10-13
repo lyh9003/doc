@@ -20,7 +20,7 @@ st.markdown("---")                  # 경계선 생성
 
 # 4.뉴스 기사 크롤링 함수
 def naver_news(pages=3):  # pages 인자를 통해 몇 페이지를 크롤링할지 결정
-    news_titles_links = []  # 뉴스 제목과 링크를 저장할 리스트 (튜플 형태로)
+    news_titles_links_comments = []  # 뉴스 제목, 링크, 댓글 수를 저장할 리스트 (튜플 형태로)
 
     # 여러 페이지 크롤링
     for page in range(1, pages+1):  # 원하는 페이지 수만큼 반복
@@ -40,28 +40,42 @@ def naver_news(pages=3):  # pages 인자를 통해 몇 페이지를 크롤링할
         titles = soup.select("#main_content > div.list_body.newsflash_body > ul > li > a")
 
         for title in titles:  # 각 title에 대해 반복
-            news_titles_links.append((title.text.strip(), title['href']))  # 제목과 링크를 튜플로 저장
+            news_title = title.text.strip()  # 뉴스 제목
+            news_link = title['href']        # 뉴스 링크
 
-    # part2. 중복 뉴스 제거 (튜플로 저장된 제목과 링크를 함께 중복 제거)
-    news_titles_links = list(dict.fromkeys(news_titles_links))  # 순서가 유지되는 중복 제거
+            # 뉴스 링크에서 댓글 수 크롤링
+            article_response = requests.get(news_link, headers=headers)  # 뉴스 링크로 접근
+            article_html = article_response.text
+            article_soup = BeautifulSoup(article_html, "html.parser")
+
+            # 댓글 수가 표시된 HTML 요소를 추출 (예시로 .u_cbox_count라는 클래스를 사용)
+            try:
+                comment_count = article_soup.select_one(".u_cbox_count").text  # 댓글 수 추출
+            except AttributeError:
+                comment_count = "0"  # 댓글이 없으면 0으로 표시
+
+            news_titles_links_comments.append((news_title, news_link, comment_count))  # 제목, 링크, 댓글 수 추가
+
+    # 중복 제거
+    news_titles_links_comments = list(dict.fromkeys(news_titles_links_comments))  # 중복 제거
 
     # 인덱스 리스트 및 뉴스 리스트 생성
     index = []
-    news_with_links = []
+    news_with_links_and_comments = []
 
     # 정제된 뉴스와 인덱스 리스트에 저장
-    for i, (title, link) in enumerate(news_titles_links):
+    for i, (title, link, comment) in enumerate(news_titles_links_comments):
         index.append(i + 1)  # 인덱스 저장
-        news_with_links.append(f"[{title}]({link})")  # 제목에 링크를 추가한 markdown 형식으로 저장
+        news_with_links_and_comments.append(f"[{title}]({link}) - 댓글 수: {comment}")  # 제목, 링크, 댓글 수 출력
 
     # 데이터 프레임 생성
     df = pd.DataFrame({
         "No.": index,
-        "Articles": news_with_links
-    })  # 인덱스와 뉴스 제목 + 링크로 데이터프레임 생성
+        "Articles": news_with_links_and_comments
+    })  # 인덱스와 뉴스 제목 + 링크 + 댓글 수로 데이터프레임 생성
 
     return df  # 데이터프레임 반환
-
+    
 # 5.Page Layout설계
 col1, col2 = st.columns([2, 8])                     # 페이지 Layout를 2개의 Column으로 분할
 
