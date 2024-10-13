@@ -66,10 +66,17 @@ with col1:
 
 # 7.col2 설계
 with col2:
-    if button1:                                     # button1을 누르면
-        df = naver_news()                           # naver_news()함수 실행하여 df를 반환받음
+    # 빈 데이터프레임 미리 선언
+    if 'df' not in st.session_state:
+        st.session_state.df = pd.DataFrame()  # 빈 데이터프레임을 세션 상태에 저장
+    
+    if button1:  # button1을 누르면
+        st.session_state.df = naver_news()  # 세션 상태에 df 저장
         
-    if button2:                                     # button2를 누르면
-        st.dataframe(data = df,                     # 데이터 프레임 생성
-                     use_container_width = True,    # 데이터는 df를 사용
-                     hide_index = True)             # 폭은 현재 컨테이너 넓이 적용, 인덱스는 생략
+    if button2:  # button2를 누르면
+        if not st.session_state.df.empty:  # df가 비어있지 않은 경우에만 출력
+            st.dataframe(data = st.session_state.df,  # 세션 상태에서 데이터프레임 사용
+                         use_container_width=True,   # 컨테이너 너비에 맞게 출력
+                         hide_index=True)            # 인덱스 생략
+        else:
+            st.write("뉴스 크롤링을 먼저 수행해 주세요.")  # df가 비어있을 때 메시지 출력
