@@ -84,7 +84,7 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
 #       ])
 
     if "selected_option" not in st.session_state:
-    st.session_state.selected_option = '옵션 2: Implicit [Recast] B선생님'
+        st.session_state.selected_option = '옵션 2: Implicit [Recast] B선생님'
 
     
     system_message_A = f'''
