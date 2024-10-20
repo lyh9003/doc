@@ -77,11 +77,16 @@ if 'user_name' in st.session_state and 'user_number' in st.session_state:
     10문제를 풀기 전까지는 절대 대화 종료 및 다음 선생님과 대화 버튼을 누르지 마세요!""", unsafe_allow_html=True)
 
     # 옵션 설정 (무작위 선택)
+#    if "selected_option" not in st.session_state:
+#        st.session_state.selected_option = random.choice([
+#            '옵션 1: Explicit [Metalinguistic] A선생님',
+#            '옵션 2: Implicit [Recast] B선생님'
+#       ])
+
     if "selected_option" not in st.session_state:
-        st.session_state.selected_option = random.choice([
-            '옵션 1: Explicit [Metalinguistic] A선생님',
-            '옵션 2: Implicit [Recast] B선생님'
-        ])
+    st.session_state.selected_option = '옵션 2: Implicit [Recast] B선생님'
+
+    
     system_message_A = f'''
     안녕 {st.session_state['user_name']} Explicit [Metalinguistic] A선생님
     안녕하세요! 나는 영어 선생님입니다. 오늘은 당신이 영어쓰기 활동에서 보조교사의 역할을 해줬으면 좋겠어요. 당신은 우선 아래 [지문]에서 [정답]과 [문제]를 비교하여 불일치 하는 부분을 ‘올바름’으로 명명하고 이 ‘올바름’을 학생이 맞출 수 있도록 유도해야 합니다. 이는 [지문] 내 총 10개 목록에 동일하게 적용됩니다.
