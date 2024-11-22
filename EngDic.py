@@ -41,17 +41,21 @@ if prompt := st.chat_input("영어 단어를 입력해 주세요:"):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # OpenAI API 호출
+    # OpenAI API 호출 및 응답 처리
     with st.chat_message("assistant"):
         try:
             response = openai.ChatCompletion.create(
                 model=st.session_state["openai_model"],
                 messages=st.session_state.messages,
             )
+            # API 응답에서 메시지 추출
             assistant_message = response["choices"][0]["message"]["content"]
-            st.markdown(assistant_message)
         except Exception as e:
-            st.error(f"오류가 발생했습니다: {e}")
+            # 오류 발생 시 기본 응답 처리
+            assistant_message = "죄송합니다. 요청을 처리하는 중 오류가 발생했습니다."
+            st.error(f"오류: {e}")
+
+        st.markdown(assistant_message)
 
     # 응답 저장
     st.session_state.messages.append({"role": "assistant", "content": assistant_message})
