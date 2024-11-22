@@ -2,3 +2,5 @@ streamlit
 openai
 python-dotenv
 BeautifulSoup4
+re
+os
