@@ -1,69 +1,51 @@
+from openai import OpenAI
 import streamlit as st
-import openai
-import os
-import re
 
-# OpenAI API 키 설정
-client = openai.Client(api_key=os.getenv("OPENAI_API_KEY"))
-if not client.api_key:
-    st.error("OpenAI API 키가 설정되지 않았습니다. 환경 변수를 확인해 주세요.")
-    st.stop()
+st.title("친근한 챗봇")
 
-# Streamlit 앱 제목
-st.title("영어사전 챗봇")
+api_key = st.text_input("Enter your OpenAI API key", type="password")
 
-# 세션 상태 초기화
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+if api_key:
+    client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-# 영어 단어 여부를 확인하는 함수
-def is_english_word(word):
-    return re.match(r"^[a-zA-Z]+$", word.strip())
+    if "openai_model" not in st.session_state:
+        st.session_state["openai_model"] = "gpt-3.5-turbo"
 
-# OpenAI API를 사용하여 영어 단어 정보를 가져오는 함수
-def get_word_info(word):
-    prompt = f"""
-    아래 요구 사항을 충족하는 {word}의 정보를 제공해 주세요:
-    1. 발음기호
-    2. 영어 뜻 (명사, 동사 등 품사별로 구분)
-    3. 한국어 뜻 (품사별로 나눠서)
-    4. 각 뜻에 맞는 영어 예문
-    5. 어원
-    6. 동의어와 반의어를 포함한 관련 단어
-    7. 기억하기 쉬운 연상법
-    """
-    try:
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",  # 또는 "gpt-4"
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.7
-        )
-        return response["choices"][0]["message"]["content"]
-    except Exception as e:
-        return f"오류가 발생했습니다: {str(e)}"
+    system_message = '''
+    너의 이름은 친구봇이야.
+    너는 항상 반말을 하는 챗봇이야. 다나까나 요 같은 높임말로 절대로 끝내지 마
+    항상 반말로 친근하게 대답해줘.
+    영어로 질문을 받아도 무조건 한글로 답변해줘.
+    한글이 아닌 답변일 때는 다시 생각해서 꼭 한글로 만들어줘
+    모든 답변 끝에 답변에 맞는 이모티콘도 추가해줘
+    '''
 
-# 이전 대화 표시
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
 
-# 사용자 입력 처리
-if prompt := st.chat_input("영어 단어를 입력하세요:"):
-    # 사용자 메시지 저장 및 표시
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
-        st.markdown(prompt)
+    if len(st.session_state.messages) == 0:
+        st.session_state.messages = [{"role": "system", "content": system_message}]
 
-    # 입력이 영어 단어인지 확인
-    if is_english_word(prompt):
-        # OpenAI API를 통한 단어 정보 생성
-        word_info = get_word_info(prompt)
-        st.session_state.messages.append({"role": "assistant", "content": word_info})
+    for idx, message in enumerate(st.session_state.messages):
+        if idx > 0:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
+
+    if prompt := st.chat_input("What is up?"):
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user"):
+            st.markdown(prompt)
+
         with st.chat_message("assistant"):
-            st.markdown(word_info)
-    else:
-        # 영어 단어가 아닌 경우 경고 메시지
-        warning = "영어 단어를 입력해 주세요."
-        st.session_state.messages.append({"role": "assistant", "content": warning})
-        with st.chat_message("assistant"):
-            st.markdown(warning)
+            stream = client.chat.completions.create(
+                model=st.session_state["openai_model"],
+                messages=[
+                    {"role": m["role"], "content": m["content"]}
+                    for m in st.session_state.messages
+                ],
+                stream=True,
+            )
+            response = st.write_stream(stream)
+        st.session_state.messages.append({"role": "assistant", "content": response})
+else:
+    st.info("API key를 입력해주세요.")
