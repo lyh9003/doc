@@ -5,6 +5,9 @@ import re
 
 # OpenAI API 키 설정
 openai.api_key = os.getenv("OPENAI_API_KEY")
+if not openai.api_key:
+    st.error("OpenAI API 키가 설정되지 않았습니다. 환경 변수를 확인해 주세요.")
+    st.stop()
 
 # Streamlit 앱 제목
 st.title("영어사전 챗봇")
@@ -15,7 +18,7 @@ if "messages" not in st.session_state:
 
 # 영어 단어 여부를 확인하는 함수
 def is_english_word(word):
-    return re.match(r"^[a-zA-Z]+$", word)
+    return re.match(r"^[a-zA-Z]+$", word.strip())
 
 # OpenAI API를 사용하여 영어 단어 정보를 가져오는 함수
 def get_word_info(word):
@@ -27,14 +30,17 @@ def get_word_info(word):
     4. 각 뜻에 맞는 영어 예문
     5. 어원
     6. 동의어와 반의어를 포함한 관련 단어
-    7. 기억하기 쉽게 연상법
+    7. 기억하기 쉬운 연상법
     """
-    response = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",  # 또는 "gpt-4"로 변경 가능
-    messages=[{"role": "user", "content": prompt}],
-    temperature=0.7
-    )
-    return response.choices[0].message["content"]
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.7
+        )
+        return response.choices[0].message["content"]
+    except Exception as e:
+        return f"오류가 발생했습니다: {str(e)}"
 
 # 이전 대화 표시
 for message in st.session_state.messages:
