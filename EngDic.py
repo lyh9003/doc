@@ -9,20 +9,20 @@ if api_key:
     client = OpenAI(api_key=api_key)
 
     if "openai_model" not in st.session_state:
-        st.session_state["openai_model"] = "gpt-4o"
+        st.session_state["openai_model"] = "gpt-4o-mini"
 
     system_message = '''
     이건 영어사전 챗봇이야. 영어단어만 입력을 받고 있고, 영어 단어 말고 다른게 입력되면
     "영어 단어를 입력해 주세요"라고 답하면 돼.
     영어 단어를 입력받으면 아래 내용 순서로 보여줘.
     
-    1. 발음기호 
+    1. 발음기호 (한국어 발음으로도 같이)
     2. 영단어의 뜻을 영어로 해석 (명사, 동사 등 품사도 함께 표시) 
     3. 한국어 뜻 (품사별로 나눠서) 
-    4. 각 뜻에 맞는 예시 문장을 영어로 제시 
-    5. 그 단어의 어원 
-    6. 동의어나 반의어를 포함한 관련 단어들 
-    7. 기억하기 쉽게 연상법
+    4. 예시 문장 (5개)
+    5. 단어의 어원 
+    6. 동의어나 반의어를 포함한 관련 단어
+    7. 기억하기 쉬운 연상법(한국인이 외우기 쉬운 방법)
     '''
 
     if "messages" not in st.session_state:
