@@ -4,8 +4,8 @@ import os
 import re
 
 # OpenAI API 키 설정
-openai.api_key = os.getenv("OPENAI_API_KEY")
-if not openai.api_key:
+client = openai.Client(api_key=os.getenv("OPENAI_API_KEY"))
+if not client.api_key:
     st.error("OpenAI API 키가 설정되지 않았습니다. 환경 변수를 확인해 주세요.")
     st.stop()
 
@@ -33,15 +33,12 @@ def get_word_info(word):
     7. 기억하기 쉬운 연상법
     """
     try:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo",  # 또는 "gpt-4"
-            messages=[
-                {"role": "system", "content": "이것은 영어 단어 정보를 제공하는 사전 챗봇입니다."},
-                {"role": "user", "content": prompt}
-            ],
+            messages=[{"role": "user", "content": prompt}],
             temperature=0.7
         )
-        return response['choices'][0]['message']['content']
+        return response["choices"][0]["message"]["content"]
     except Exception as e:
         return f"오류가 발생했습니다: {str(e)}"
 
