@@ -3,8 +3,6 @@ import streamlit as st
 
 st.title("친근한 챗봇")
 
-api_key = st.text_input("Enter your OpenAI API key", type="password")
-
 if api_key:
     client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
