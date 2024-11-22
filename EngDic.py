@@ -34,11 +34,14 @@ def get_word_info(word):
     """
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": prompt}],
+            model="gpt-3.5-turbo",  # 또는 "gpt-4"
+            messages=[
+                {"role": "system", "content": "이것은 영어 단어 정보를 제공하는 사전 챗봇입니다."},
+                {"role": "user", "content": prompt}
+            ],
             temperature=0.7
         )
-        return response.choices[0].message["content"]
+        return response['choices'][0]['message']['content']
     except Exception as e:
         return f"오류가 발생했습니다: {str(e)}"
 
