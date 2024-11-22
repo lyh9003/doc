@@ -1,7 +1,7 @@
 from openai import OpenAI
 import streamlit as st
 
-st.title("친근한 챗봇")
+st.title("인선쌤 영어사전")
 
 api_key =  st.secrets["OPENAI_API_KEY"]
 
