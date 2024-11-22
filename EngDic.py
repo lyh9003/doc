@@ -9,7 +9,7 @@ if api_key:
     client = OpenAI(api_key=api_key)
 
     if "openai_model" not in st.session_state:
-        st.session_state["openai_model"] = "gpt-3.5-turbo"
+        st.session_state["openai_model"] = "gpt-4o-mini"
 
     system_message = '''
     이건 영어사전 챗봇이야. 영어단어만 입력을 받고 있고, 영어 단어 말고 다른게 입력되면
