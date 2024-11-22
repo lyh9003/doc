@@ -1,7 +1,10 @@
 from openai import OpenAI
 import streamlit as st
 
-st.title("인선쌤 영어사전")
+st.set_page_config(layout="wide")
+
+# TITLE 제목
+st.header("인선쌤 영어사전")
 
 api_key =  st.secrets["OPENAI_API_KEY"]
 
