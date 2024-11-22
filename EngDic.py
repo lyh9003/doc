@@ -30,8 +30,9 @@ def get_word_info(word):
     7. 기억하기 쉽게 연상법
     """
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": prompt}]
+    model="gpt-3.5-turbo",  # 또는 "gpt-4"로 변경 가능
+    messages=[{"role": "user", "content": prompt}],
+    temperature=0.7
     )
     return response.choices[0].message["content"]
 
