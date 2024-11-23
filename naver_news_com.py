@@ -75,18 +75,12 @@ with col2:
     if 'df' not in st.session_state:
         st.session_state.df = pd.DataFrame()  # 세션 상태에 빈 데이터프레임 저장
 
-    if button1:  # "뉴스 크롤링" 버튼
-        st.session_state.df = naver_news()  # 크롤링 결과 저장
-        st.session_state.df.columns = ["No.", "Articles"]  # 열 이름 강제 설정
-        st.write("크롤링된 데이터 확인:")
-        st.write(st.session_state.df)  # 디버깅: 데이터프레임 구조 확인
+    if button1:  # button1을 누르면
+        st.session_state.df = naver_news()  # 세션 상태에 df 저장 (크롤링 결과)
 
-    if button2:  # "뉴스 보기" 버튼
-        if not st.session_state.df.empty:  # 데이터가 있는 경우
-            for index, row in st.session_state.df.iterrows():
-                try:
-                    st.markdown(f"{row['No.']}. {row['Articles']}", unsafe_allow_html=True)
-                except KeyError as e:
-                    st.error(f"열 이름 오류: {e}")
+    if button2:  # button2를 누르면
+        if not st.session_state.df.empty:  # df가 비어있지 않은 경우에만 출력
+            for index, row in st.session_state.df.iterrows():  # 각 뉴스 기사에 대해 반복
+                st.markdown(f"{row['No.']}. {row['Articles']}", unsafe_allow_html=True)  # 인덱스와 링크 출력
         else:
-            st.write("뉴스 크롤링을 먼저 수행해 주세요.")  # 데이터가 없는 경우
+            st.write("뉴스 크롤링을 먼저 수행해 주세요.")  # df가 비어있을 때 메시지 출력
