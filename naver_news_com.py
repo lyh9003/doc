@@ -19,7 +19,7 @@ st.subheader("날짜:{}".format(now)) # 웹페이지 서브헤더에 날짜와 �
 st.markdown("---")                  # 경계선 생성
 
 # 4.뉴스 기사 크롤링 함수
-def naver_news_with_likes(pages=3):  # pages 인자를 통해 몇 페이지를 크롤링할지 결정
+def naver_news_with_likes(pages=1):  # pages 인자를 통해 몇 페이지를 크롤링할지 결정
     news_titles_links_likes = []  # 뉴스 제목, 링크, 좋아요 수를 저장할 리스트
 
     # 여러 페이지 크롤링
@@ -75,15 +75,15 @@ with col2:
     if 'df' not in st.session_state:
         st.session_state.df = pd.DataFrame()  # 세션 상태에 빈 데이터프레임 저장
 
-    if button1:  # button1을 누르면
-        st.session_state.df = naver_news_with_likes()  # 좋아요 포함 크롤링 결과 저장
+    if button1:  # "뉴스 크롤링" 버튼
+        st.session_state.df = naver_news()  # 크롤링 결과 저장
+        st.session_state.df.columns = ["No.", "Articles"]  # 열 이름 강제 설정
+        st.write("크롤링된 데이터 확인:")
+        st.write(st.session_state.df)  # 디버깅: 데이터프레임 구조 확인
 
-    if button2:
+    if button2:  # "뉴스 보기" 버튼
         if not st.session_state.df.empty:  # 데이터가 있는 경우
-            st.write("크롤링된 데이터 확인:")
-            st.write(st.session_state.df)  # 데이터프레임 출력 (디버깅)
             for index, row in st.session_state.df.iterrows():
-                # 열 이름 확인 후 출력
                 try:
                     st.markdown(f"{row['No.']}. {row['Articles']}", unsafe_allow_html=True)
                 except KeyError as e:
