@@ -19,11 +19,11 @@ st.subheader("날짜:{}".format(now)) # 웹페이지 서브헤더에 날짜와 �
 st.markdown("---")                  # 경계선 생성
 
 # 4.뉴스 기사 크롤링 함수
-def naver_news(pages=3):  # pages 인자를 통해 몇 페이지를 크롤링할지 결정
-    news_titles_links = []  # 뉴스 제목과 링크를 저장할 리스트 (튜플 형태로)
+def naver_news_with_likes(pages=3):  # pages 인자를 통해 몇 페이지를 크롤링할지 결정
+    news_titles_links_likes = []  # 뉴스 제목, 링크, 좋아요 수를 저장할 리스트 (튜플 형태로)
 
     # 여러 페이지 크롤링
-    for page in range(1, pages+1):  # 원하는 페이지 수만큼 반복
+    for page in range(1, pages + 1):  # 원하는 페이지 수만큼 반복
         now = datetime.datetime.now()   # 현재 날짜와 시각 객체 now 생성
         date = now.strftime("%Y%m%d")   # 날짜와 시각 형식을 "년/월/일"로 전환
         ## 뉴스 크롤링하려는 사이트 주소를 url에 입력, 페이지 번호 추가
@@ -32,33 +32,43 @@ def naver_news(pages=3):  # pages 인자를 통해 몇 페이지를 크롤링할
         headers = {
             "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36"
         }
-        response = requests.get(url, headers=headers)  # url에 웹페이지 code를 요청
+        try:
+            response = requests.get(url, headers=headers)  # url에 웹페이지 code를 요청
+            response.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            st.error(f"뉴스 데이터를 가져오는데 실패했습니다: {e}")
+            return pd.DataFrame()
+        
         html = response.text  # 웹페이지 code 중에서 텍스트만 선별
         soup = BeautifulSoup(html, "html.parser")  # html parser로 html만 soup에 반환
 
         # 뉴스 제목과 링크 가져오기
         titles = soup.select("#main_content > div.list_body.newsflash_body > ul > li > a")
+        like_counts = soup.select("span.u_likeit_text._count.num")  # 좋아요 수 가져오기
 
-        for title in titles:  # 각 title에 대해 반복
-            news_titles_links.append((title.text.strip(), title['href']))  # 제목과 링크를 튜플로 저장
+        for title, like_count in zip(titles, like_counts):  # 각 title과 like_count 쌍 반복
+            title_text = title.text.strip()
+            link = title['href']
+            likes = like_count.text.strip()
+            news_titles_links_likes.append((title_text, link, likes))  # 제목, 링크, 좋아요 수 저장
 
     # part2. 중복 뉴스 제거 (튜플로 저장된 제목과 링크를 함께 중복 제거)
-    news_titles_links = list(dict.fromkeys(news_titles_links))  # 순서가 유지되는 중복 제거
+    news_titles_links_likes = list(dict.fromkeys(news_titles_links_likes))  # 순서가 유지되는 중복 제거
 
     # 인덱스 리스트 및 뉴스 리스트 생성
     index = []
-    news_with_links = []
+    news_with_links_and_likes = []
 
     # 정제된 뉴스와 인덱스 리스트에 저장
-    for i, (title, link) in enumerate(news_titles_links):
+    for i, (title, link, likes) in enumerate(news_titles_links_likes):
         index.append(i + 1)  # 인덱스 저장
-        news_with_links.append(f"[{title}]({link})")  # 제목에 링크를 추가한 markdown 형식으로 저장
+        news_with_links_and_likes.append(f"[{title}]({link}) (좋아요: {likes})")  # 제목에 링크와 좋아요 수 추가
 
     # 데이터 프레임 생성
     df = pd.DataFrame({
         "No.": index,
-        "Articles": news_with_links
-    })  # 인덱스와 뉴스 제목 + 링크로 데이터프레임 생성
+        "Articles": news_with_links_and_likes
+    })  # 인덱스와 뉴스 제목 + 링크 + 좋아요 수로 데이터프레임 생성
 
     return df  # 데이터프레임 반환
 
@@ -78,8 +88,8 @@ with col2:
     if 'df' not in st.session_state:
         st.session_state.df = pd.DataFrame()  # 세션 상태에 빈 데이터프레임 저장
 
-    if button1:  # button1을 누르면
-        st.session_state.df = naver_news()  # 세션 상태에 df 저장 (크롤링 결과)
+    if button1:  # "뉴스 크롤링" 버튼 클릭 시
+        st.session_state.df = naver_news_with_likes()  # 좋아요 수 포함한 크롤링 결과 저장
 
     if button2:  # button2를 누르면
         if not st.session_state.df.empty:  # df가 비어있지 않은 경우에만 출력
